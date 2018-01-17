@@ -2,15 +2,14 @@
 <!DOCTYPE HTML>
 <head>
     <title>Battleship!</title>
-    <link rel="icon" type="image/gif" 
-    href="./assets/images/favicon.jpg">
-    <link rel="stylesheet" type="text/css" 
-    href="./assets/css/reset.css">
-    <link rel="stylesheet" type="text/css"
-    href="./assets/css/style.css">
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
-    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-    crossorigin="anonymous"></script> 
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="icon" type="image/gif" href="./assets/images/favicon.jpg">
+    <!-- <link rel="stylesheet" type="text/css" href="./assets/css/reset.css"> -->
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script> 
     
     <script src="https://www.gstatic.com/firebasejs/4.8.2/firebase.js"></script>
     <script>
@@ -23,21 +22,54 @@
         storageBucket: "battles-310ac.appspot.com",
         messagingSenderId: "449055183531"
       };
-      firebase.initializeApp(config);
     </script>
-    <!--Firebase Auth -->
+
     <script src="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.js"></script>
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.css" />
 
     <script src="https://www.gstatic.com/firebasejs/4.8.2/firebase.js"></script>   
+ 
+
 </head>
 
 <body>
+<!--     <div class="userCheck">
+        <input type="text" id="email" placeholder="Your Email">
+        <input type="password" id="password" placeholder="Password">
+        <button id="signUp">Sign Up</button>
+        <button id="signIn">Sign In</button>
+        <button id="signOut">Log Out</button>
+    </div> -->
+    
+    <div class="modal" id="myModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Please Login</h5>
+                    <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button> -->
+                </div>
+                <div class="modal-body">
+                    <p>Body Text Goes here</p>
+                </div>
+                    <div class="modal-footer">
+                        <button id="signUp">Sign Up</button>
+                        <button id="signIn">Sign In</button>
+                        <button id="signOut">Log Out</button>
+                    </div>
+            </div>
 
-
+        </div>
+    </div>
     <script src="./assets/javascript/logic.js"></script>
-    <script src="./assets/javascript/playerRanking.js"></script>
+    <script src="./assets/javascript/auth.js"></script>
     <script src="./assets/javascript/battleshipGridlayout.js"></script>
+       <!--Bootstrap 4.0-->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
 </body>
 
 </html> 
