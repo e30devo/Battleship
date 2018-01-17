@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Overlap</title>
+	<style>
+
+	/*-------------------------------------
+	| grid
+	-------------------------------------*/
+
+	.grid {
+		position: relative;
+		margin: 0 auto;
+		width: 520px; height: 520px;
+		padding: 0;
+	}
+
+	.player {
+		width: 550px;
+		margin: 0 auto;
+	}
+
+	.snap {
+		width: 510px;
+		height: 510px;
+		position: absolute;
+		top: 4px; left: 4px;
+		border: solid 1px red;
+	}
+
+	.block {
+		width: 50px; height: 50px;;
+		float: left;
+		border-style: solid;
+		border-width: 1px;
+		border-color: blue;
+		border-radius: 1px;
+	}
+
+	.water { width: 100%;}
+
+	.occupied {
+		opacity: .5;
+	}
+
+	/*-------------------------------------
+	| ship
+	-------------------------------------*/
+
+	.ship {
+		border: solid 1px red;
+		width: 196px; height: 40px;
+		z-index: 10; /* on top of grid -------------------------------*/
+	}
+
+	.ship img { width: 100%; height: 100%;}
+
+	.rotate { transform: rotate(90deg);}
+
+	</style>
+</head>
+<body>
+
+	<strong>Drag divs around.</strong>
+
+	<div class="grid">
+		<div class="player"></div>
+		<div class="snap"></div>
+	</div>
+	<div class="ship"><img src="./assets/images/ship1.png"></div>
+
+	<div id="result"></div>
+
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+
+	<script>
+
+	/*-------------------------------------
+	| grid
+	-------------------------------------*/
+
+	$(document).ready(function() {
+
+  var xAxis = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  var yAxis = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
+
+  var playerGrid = xAxis.length * yAxis.length;
+
+  for (var i = 0; i < playerGrid; i++) {
+    var div = $("<div>");
+    var img = $("<img>");
+    var imgSrc = "./assets/images/waterTile.jpg";
+    var optImg = "./assets/images/waterTile.jpg";
+    img.addClass("water");
+    img.attr("src", imgSrc);
+    // img.attr("data", [i]);
+    img.attr("option", );
+	div.addClass('block');
+	div.attr('id','block'+[i]);
+
+    div.append(img);
+    $(".player").append(div);
+  }
+
+  $(".waterTile").on("click", function() {
+    var src = $(this).attr("src");
+    var optImg = $(this).attr("optImg");
+    $(this).attr("data", optImg.replace(optImg, src));
+    $(this).attr("src", src.replace(src, optImg));
+
+  })
+
+	/*-------------------------------------
+	| overlap
+	-------------------------------------*/
+
+	function collision(blockId) {
+		var x1 = $('#'+blockId).offset().left;
+		var y1 = $('#'+blockId).offset().top;
+		var h1 = $('#'+blockId).outerHeight(true);
+		var w1 = $('#'+blockId).outerWidth(true);
+		var b1 = y1 + h1;
+		var r1 = x1 + w1;
+
+		var x2 = $('.ship').offset().left;
+		var y2 = $('.ship').offset().top;
+		var h2 = $('.ship').outerHeight(true);
+		var w2 = $('.ship').outerWidth(true);
+
+		var b2 = y2 + h2;
+		var r2 = x2 + w2;
+
+		if (b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2) {
+			$('#'+blockId).removeClass('occupied');
+		} else {
+			$('#'+blockId).addClass('occupied');
+		}
+	}
+
+	/*-------------------------------------
+	| check overlap
+	-------------------------------------*/
+
+	window.setInterval(check_overlap, 200);
+
+	function check_overlap(){
+		for (var i = 0; i < playerGrid; i++){
+			var blockId = 'block' + [i];
+			collision(blockId);
+		}
+	}
+
+	/*-------------------------------------
+	| snap
+	-------------------------------------*/
+
+	$('.ship').draggable({ grid: [ 52, 52 ], snap: ".snap" });
+
+	/*-------------------------------------
+	| rotation
+	-------------------------------------*/
+
+	$('.ship').on('click', function(){
+		console.log('click');
+		// $(this).css('width','40px').css('height', '196px');
+		// $(this).find('img').toggleClass('rotate');
+
+		// var width = '196px';
+        //
+		// var height = "40px";
+        //
+		// $(this).css("width", width.replace(width, height));
+        //
+		// $(this).css("height", height.replace(height, width));
+	});
+
+	}); //document.ready close
+
+	</script>
+</body>
+</html>
