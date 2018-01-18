@@ -22,10 +22,10 @@
 	}
 
 	.snap {
-		width: 510px;
-		height: 510px;
+		width: 500px;
+		height: 500px;
 		position: absolute;
-		top: 4px; left: 4px;
+		top: 8px; left: 8px;
 		border: solid 1px red;
 	}
 
@@ -40,35 +40,44 @@
 
 	.water { width: 100%;}
 
-	.occupied {
-		opacity: .5;
-	}
+	.occupied { opacity: .5;}
 
 	/*-------------------------------------
 	| ship
 	-------------------------------------*/
 
-	.ship {
+	.horizontal {
+		background: url('./assets/images/ship1.png');
+		background-size: contain;
 		border: solid 1px red;
-		width: 196px; height: 40px;
+		width: 185px; height: 30px;
 		z-index: 10; /* on top of grid -------------------------------*/
 	}
 
-	.ship img { width: 100%; height: 100%;}
-
-	.rotate { transform: rotate(90deg);}
+	.vertical {
+		background: url('./assets/images/ship1-rotate.png');
+		background-size: contain;
+		border: solid 1px red;
+		width: 30px; height: 185px;
+		z-index: 10;
+	}
 
 	</style>
 </head>
 <body>
 
-	<strong>Drag divs around.</strong>
+	<h1 id="confirm">Start!</h1>
 
 	<div class="grid">
 		<div class="player"></div>
 		<div class="snap"></div>
 	</div>
-	<div class="ship"><img src="./assets/images/ship1.png"></div>
+
+	<div id="ship1" class="ship horizontal"></div>
+	<div id="ship2" class="ship horizontal"></div>
+	<div id="ship3" class="ship horizontal"></div>
+	<div id="ship4" class="ship horizontal"></div>
+	<div id="ship5" class="ship horizontal"></div>
 
 	<div id="result"></div>
 
@@ -77,46 +86,70 @@
 
 	<script>
 
-	/*-------------------------------------
-	| grid
-	-------------------------------------*/
-
 	$(document).ready(function() {
 
-  var xAxis = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  var yAxis = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
-
-  var playerGrid = xAxis.length * yAxis.length;
-
-  for (var i = 0; i < playerGrid; i++) {
-    var div = $("<div>");
-    var img = $("<img>");
-    var imgSrc = "./assets/images/waterTile.jpg";
-    var optImg = "./assets/images/waterTile.jpg";
-    img.addClass("water");
-    img.attr("src", imgSrc);
-    // img.attr("data", [i]);
-    img.attr("option", );
-	div.addClass('block');
-	div.attr('id','block'+[i]);
-
-    div.append(img);
-    $(".player").append(div);
-  }
-
-  $(".waterTile").on("click", function() {
-    var src = $(this).attr("src");
-    var optImg = $(this).attr("optImg");
-    $(this).attr("data", optImg.replace(optImg, src));
-    $(this).attr("src", src.replace(src, optImg));
-
-  })
-
 	/*-------------------------------------
-	| overlap
+	| global var
 	-------------------------------------*/
 
-	function collision(blockId) {
+	var shipId;
+
+	var xAxis = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    var yAxis = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
+
+    var playerGrid = xAxis.length * yAxis.length;
+
+	/*-------------------------------------
+	| print grid
+	-------------------------------------*/
+
+	for (var i = 0; i < playerGrid; i++) {
+		var div = $("<div>");
+		var img = $("<img>");
+		var imgSrc = "./assets/images/waterTile.jpg";
+		var optImg = "./assets/images/waterTile.jpg";
+		img.addClass("water");
+		img.attr("src", imgSrc);
+		// img.attr("data", [i]);
+		img.attr("option", );
+		div.addClass('block');
+		div.attr('id','block'+[i]);
+
+		div.append(img);
+		$(".player").append(div);
+	}
+
+	$(".waterTile").on("click", function() {
+		var src = $(this).attr("src");
+		var optImg = $(this).attr("optImg");
+		$(this).attr("data", optImg.replace(optImg, src));
+		$(this).attr("src", src.replace(src, optImg));
+
+	})
+
+	/*-------------------------------------
+	| place and confirm
+	-------------------------------------*/
+
+	$('.ship').draggable({ grid: [ 52, 52 ], snap: ".snap" });
+
+	$('#confirm').on('click', function(){
+
+		for(var i=1; i< 6; i++){
+			shipId = 'ship'+i;
+
+			for(var j = 0; j < playerGrid; j++){
+				var blockId = 'block' + [j];
+				overlap(blockId);
+			}
+		}
+	});
+
+	/*-------------------------------------
+	| check overlap
+	-------------------------------------*/
+
+	function overlap(blockId) {
 		var x1 = $('#'+blockId).offset().left;
 		var y1 = $('#'+blockId).offset().top;
 		var h1 = $('#'+blockId).outerHeight(true);
@@ -124,56 +157,29 @@
 		var b1 = y1 + h1;
 		var r1 = x1 + w1;
 
-		var x2 = $('.ship').offset().left;
-		var y2 = $('.ship').offset().top;
-		var h2 = $('.ship').outerHeight(true);
-		var w2 = $('.ship').outerWidth(true);
+		var x2 = $('#'+shipId).offset().left;
+		var y2 = $('#'+shipId).offset().top;
+		var h2 = $('#'+shipId).outerHeight(true);
+		var w2 = $('#'+shipId).outerWidth(true);
 
 		var b2 = y2 + h2;
 		var r2 = x2 + w2;
 
 		if (b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2) {
-			$('#'+blockId).removeClass('occupied');
+			// $('#'+blockId).removeClass('occupied');
 		} else {
 			$('#'+blockId).addClass('occupied');
 		}
+
 	}
 
 	/*-------------------------------------
-	| check overlap
-	-------------------------------------*/
-
-	window.setInterval(check_overlap, 200);
-
-	function check_overlap(){
-		for (var i = 0; i < playerGrid; i++){
-			var blockId = 'block' + [i];
-			collision(blockId);
-		}
-	}
-
-	/*-------------------------------------
-	| snap
-	-------------------------------------*/
-
-	$('.ship').draggable({ grid: [ 52, 52 ], snap: ".snap" });
-
-	/*-------------------------------------
-	| rotation
+	| rotate
 	-------------------------------------*/
 
 	$('.ship').on('click', function(){
-		console.log('click');
-		// $(this).css('width','40px').css('height', '196px');
-		// $(this).find('img').toggleClass('rotate');
-
-		// var width = '196px';
-        //
-		// var height = "40px";
-        //
-		// $(this).css("width", width.replace(width, height));
-        //
-		// $(this).css("height", height.replace(height, width));
+		$(this).toggleClass('vertical');
+		$(this).toggleClass('horizontal');
 	});
 
 	}); //document.ready close
