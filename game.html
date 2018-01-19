@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Battleship</title>
+	<link rel="stylesheet" href="./assets/css/reset.css">
+   	<link rel="stylesheet" href="./assets/css/style.css">
+
+	<script src="https://www.gstatic.com/firebasejs/4.8.2/firebase.js"></script>
+	<script>
+	// Initialize Firebase
+	var config = {
+		apiKey: "AIzaSyAFWlMWRYKyY2eMmyNxiRMQ-5FdxiM5j7o",
+		authDomain: "inclasstestproject.firebaseapp.com",
+		databaseURL: "https://inclasstestproject.firebaseio.com",
+		projectId: "inclasstestproject",
+		storageBucket: "inclasstestproject.appspot.com",
+		messagingSenderId: "215808646638"
+	};
+	firebase.initializeApp(config);
+	</script>
+
+<body>
+
+	<h1 id="confirm">Start!</h1>
+
+	<div class="board">
+		<div class="grid">
+			<div class="player"></div>
+			<div class="snap"></div>
+		</div>
+	</div>
+
+	<div id="ship1" class="ship" rotate="false" size="235px"><img src="./assets/images/ship1.png"></div>
+	<div id="ship2" class="ship" rotate="false" size="188px"><img src="./assets/images/ship1.png"></div>
+	<div id="ship3" class="ship" rotate="false" size="141px"><img src="./assets/images/ship1.png"></div>
+	<div id="ship4" class="ship" rotate="false" size="141px"><img src="./assets/images/ship1.png"></div>
+	<div id="ship5" class="ship" rotate="false" size="94px"><img src="./assets/images/ship1.png"></div>
+
+	<div id="result"></div>
+
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+	<script src="./assets/javascript/game.js"></script>
+</body>
+</html>
