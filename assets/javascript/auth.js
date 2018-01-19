@@ -23,12 +23,12 @@ $(document).ready(function(){
 	}
 
 	function clearFields() {
-		$(".emailA").empty();
-		$(".emailB").empty();
-		$(".email").empty();
-		$(".passwordA").empty();
-		$(".passwordB").empty();
-		$(".password").empty();
+		$("#emailA").val("");
+		$("#emailB").val("");
+		$("#email").val("");
+		$("#passwordA").val("");
+		$("#passwordB").val("");
+		$("#password").val("");
 	}
 
 	function modalCall() {
@@ -71,7 +71,13 @@ $(document).ready(function(){
 								loginFlow();
 							})
 							.catch(function(error) {
-						  		console.log(error);
+						  		switch (error.code) {
+						  			case "auth/email-already-in-use":
+						  				$(".userPrompt").text("Email Already In Use");
+										break;
+									default:
+										console.log(error.code);
+						  		}
 						});
 					} else {
 						$(".userPrompt").text("Your Passwords Do Not Match");
@@ -101,9 +107,15 @@ $(document).ready(function(){
 					$("#myModalSignIn").modal('hide');
 				})
 				.catch(function(error) {
-					var errorCode = error.code;
-					var errorMessage = error.message;
-					console.log(errorCode, errorMessage);
+					switch (error.code) {
+						case "auth/user-not-found":
+							$(".userPrompt").text("Incorrect Email or Password");
+							break;
+						case "auth/wrong-password":
+							$(".userPrompt").text("Incorrect Email or Password");
+						default:
+							console.log(error.code);
+					}
 			});
 			} else {
 				$(".userPrompt").text("Invalid Email Address");
