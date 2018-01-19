@@ -5,7 +5,7 @@ $(document).ready(function(){
 	var email;
 	var password;
 	var freezeModal = {backdrop: 'static', keyboard: false};
-	//TODO: Email validation
+	
 	function isValidEmail(email) {
 		if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
 			return true;
