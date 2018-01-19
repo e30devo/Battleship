@@ -1,4 +1,3 @@
-
 	/*-------------------------------------
 	| gameboard
 	-------------------------------------*/
@@ -56,4 +55,16 @@
 	#ship3 { width: 141px; height: 30px;}
 	#ship4 { width: 141px; height: 30px;}
 	#ship5 { width: 94px; height: 30px;}
+
+
+/*-----------------
+| Login/ Logout
+------------------*/
+.hideLogout {
+	visibility: hidden;
+}
+
+.showLogout {
+	visibility: visible;
+}
 
