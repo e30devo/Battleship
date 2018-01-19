@@ -33,33 +33,45 @@
 </head>
 
 <body>
-<!--     <div class="userCheck">
-        <input type="text" id="email" placeholder="Your Email">
-        <input type="password" id="password" placeholder="Password">
-        <button id="signUp">Sign Up</button>
-        <button id="signIn">Sign In</button>
-        <button id="signOut">Log Out</button>
-    </div> -->
-    
-    <div class="modal" id="myModal" tabindex="-1" role="dialog">
+    <button class="hideLogout" id="signOut">Log Out</button>
+    <div class="modal" id="myModalSignIn" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Please Login</h5>
-                    <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button> -->
+                    <h5 class="modal-title">Login</h5>
                 </div>
                 <div class="modal-body">
-                    <p>Body Text Goes here</p>
+                    <input type="text" id="email" placeholder="Your Email">
+                    <input type="password" id="password" placeholder="Password">
+                    <span class="userPrompt"></span>
                 </div>
-                    <div class="modal-footer">
-                        <button id="signUp">Sign Up</button>
-                        <button id="signIn">Sign In</button>
-                        <button id="signOut">Log Out</button>
-                    </div>
+                <div class="modal-footer">
+                    <!-- <button id="signUp">Sign Up</button> -->
+                    <a href="#" class="signUpSwitch loginSwitch">Sign Up</a>
+                    <button id="signIn">Sign In</button>
+                </div>
             </div>
-
+        </div>
+    </div>
+    <div class="modal" id="myModalSignUp" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Sign Up</h5>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="emailA" placeholder="Your Email">
+                    <input type="text" id="emailB" placeholder="Confirm Email"><br>
+                    <input type="password" id="passwordA" placeholder="Password">
+                    <input type="password" id="passwordB" placeholder="Confirm Password">
+                    <span class="userPrompt"></span>
+                </div>
+                <div class="modal-footer">
+                    
+                    <a class="signInSwitch loginSwitch" href="#">Sign In</a>
+                    <button id="signUp">Sign Up</button>
+                </div>
+            </div>
         </div>
     </div>
     <script src="./assets/javascript/logic.js"></script>

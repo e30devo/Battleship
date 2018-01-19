@@ -1,87 +1,141 @@
-
-firebase.initializeApp(config);
-
-var database = firebase.database();
-var email;
-var password;
-
-function eatCookie(name) {
-	var nameEQ = name + "=";
-	var ca = document.cookie.split(";");
-	for (var i=0; i< ca.length;i++) {
-		var c = ca[i];
-		while (c.charAt(0) === " ") c = c.substring(1, c.length);
-		if (c.indexOf(nameEQ) === 0) {
-			return c.substring(nameEQ.length, c.length);
+$(document).ready(function(){
+	firebase.initializeApp(config);
+	var auth = firebase.auth();
+	var database = firebase.database();
+	var email;
+	var password;
+	var freezeModal = {backdrop: 'static', keyboard: false};
+	//TODO: Email validation
+	function isValidEmail(email) {
+		if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+			return true;
+		} else {
+			return false;
 		}
-	return null;
+	};
+
+	function doTheyMatch(entryA, entryB) {
+		if (entryA === entryB) {
+			return true;
+		} else {
+			return false;
+		}
 	}
-}
-console.log(eatCookie("name"));
-bakeCookie();
 
-function bakeCookie(){
-	document.cookie = "name=nema;";
-	console.log(document.cookie);
+	function clearFields() {
+		$(".emailA").empty();
+		$(".emailB").empty();
+		$(".email").empty();
+		$(".passwordA").empty();
+		$(".passwordB").empty();
+		$(".password").empty();
+	}
 
-}
-$(document).ready( function() {
+	function modalCall() {
+		$("#myModalSignIn").modal(freezeModal);
+		$("#signOut").removeClass("showLogout");
+	};
+
+	function loginFlow() {
+		$("#myModal").modal('hide');
+		$("#signOut").addClass("showLogout");
+		clearFields();
+	}
+
+	firebase.auth().onAuthStateChanged(function(user) {
+	  if (user) {
+	  	loginFlow();
+	    console.log(user);
+	  } else {
+	  	modalCall();
+	    console.log("no user");
+	  }
+	});
 
 
-	$("#myModal").modal(/*{backdrop: 'static', keyboard: false}*/); //uncommented for testing
+	$("#signUp").on("click", function(event) {
+		event.preventDefault();
 
-});
+		emailA = $("#emailA").val();
+		emailB = $("#emailB").val();
+		passwordA = $("#passwordA").val();
+		passwordB = $("#passwordB").val();
+
+		if (isValidEmail(emailA) === true) {
+			if (doTheyMatch(emailA, emailB) === true){
+				if (passwordA.length > 7){
+					console.log(passwordA.length > 7);
+					if(doTheyMatch(passwordA, passwordB) === true) {
+						firebase.auth().createUserWithEmailAndPassword(emailA, passwordA)
+							.then(function(user) {
+								loginFlow();
+							})
+							.catch(function(error) {
+						  		console.log(error);
+						});
+					} else {
+						$(".userPrompt").text("Your Passwords Do Not Match");
+					}
+				} else {
+					$(".userPrompt").text("Your Password Is Less Than 8 Characters");
+				}
+			} else {
+				$(".userPrompt").text("Your Emails Do Not Match");
+			}
+		} else {
+			$(".userPrompt").text("Invalid Email Address");
+		}
+		
+	});
 
 
+	$("#signIn").on("click", function(event) {
+		event.preventDefault(event);
+		email = $("#email").val();
+		password = $("#password").val();
 
-/*$('#myModal').on('shown.bs.modal', function () {
-  
-});*/
-/*
-$("#signUp").on("click", function(event) {
-	event.preventDefault();
+		if (isValidEmail(email) === true){ 
+			firebase.auth().signInWithEmailAndPassword(email, password)
+				.then(function(user) {
+					console.log(user.email);
+					$("#myModalSignIn").modal('hide');
+				})
+				.catch(function(error) {
+					var errorCode = error.code;
+					var errorMessage = error.message;
+					console.log(errorCode, errorMessage);
+			});
+			} else {
+				$(".userPrompt").text("Invalid Email Address");
+			}
+		
+		
+		
+	});
 
-	email = $("#email").val();
-	password = $("#password").val();
+	$("#signOut").on("click", function(event) {
+		event.preventDefault(event);
 
-		if (!!email) {
-		database.ref("/users/" + email).update({
-			wins: 0,
-			losses: 0,
-			rank: 0
+		firebase.auth().signOut().then(function() {
+		  console.log("Sign Out Successful");
+		}).catch(function(error) {
+		  console.log("Sign Out Failed");
 		});
-	}
 
-	firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-	  var errorCode = error.code;
-	  var errorMessage = error.message;
 	});
+
+	//switch to sign up
+	$(".signUpSwitch").on("click", function(){
+		$("#myModalLogin").modal('hide');
+		$("#myModalSignUp").modal(freezeModal);
+		console.log("switch");
+	});
+
+	$(".signInSwitch").on("click", function(){
+		$("#myModalLogin").modal(freezeModal);
+		$("#myModalSignUp").modal('hide');
+		console.log("switch");
+	});
+
+
 });
-
-
-$("#signIn").on("click", function(event) {
-	event.preventDefault(event);
-
-
-	email = $("#email").val();
-	password = $("#password").val();
-
-	firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-		// Handle Errors here.
-		var errorCode = error.code;
-		var errorMessage = error.message;
-		// ...
-	});
-});
-
-$("#signOut").on("click", function(event) {
-	event.preventDefault(event);
-
-
-	firebase.auth().signOut().then(function() {
-	  console.log("Sign Out Successful");
-	}).catch(function(error) {
-	  console.log("Sign Out Failed");
-	});
-
-});*/
