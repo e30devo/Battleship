@@ -38,14 +38,24 @@ $(".waterTile").on("click", function() {
 	var optImg = $(this).attr("optImg");
 	$(this).attr("data", optImg.replace(optImg, src));
 	$(this).attr("src", src.replace(src, optImg));
+});
 
-})
+/*-------------------------------------
+| snap to grid
+-------------------------------------*/
+
+var snapGrid = $('<div class="snapGrid">');
+$('.block').append(snapGrid);
+
+$('.ship').draggable({
+	grid: [ 52, 52 ],
+	snap: ".snapGrid",
+	snapMode: 'inner'
+});
 
 /*-------------------------------------
 | place and confirm
 -------------------------------------*/
-
-$('.ship').draggable({ grid: [ 52, 52 ], snap: ".snap" });
 
 $('#confirm').on('click', function(){
 	database.ref('location').remove();
@@ -97,13 +107,14 @@ function overlap(blockId) {
 
 var newGrid = $('.board').html();
 $('.board').append(newGrid);
-$('.grid:eq(1)').addClass('opponent');
+$('.player:eq(1)').addClass('opponent');
 $('.opponent .water').css('opacity',.6);
 
 /* change opponent block id -------------------------------*/
 for(var i = 0; i < playerGrid; i++){
 	var newId = 'op-block'+i
 	$('.opponent .block:eq('+ i +')').attr('id', newId);
+	$('.opponent .snapGrid').detach();
 }
 
 /*-------------------------------------

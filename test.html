@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<style>
+
+		body { line-height: 0;}
+		.div1 {
+			border: solid 1px red;
+			width: 200px; height: 200px;
+			display: inline-block;
+			margin: 0;
+			line-height: 0;
+			padding: 0;
+		}
+
+		.div2 {
+			background-color: grey;
+			width: 500px; height: 50px;
+			border: solid 1px black;
+		}
+
+		.active {
+			background-color: yellow;
+		}
+
+	</style>
+</head>
+<body>
+	<div class="div1"></div>
+	<div class="div1"></div>
+	<div class="div1"></div>
+	<div class="div1"></div>
+
+	<div class="div2"></div>
+	<!-- <div class="div2"></div> -->
+
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<!-- <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script> -->
+
+	<script>
+
+
+	$(function() {
+        $( ".div2" ).draggable();
+
+    });
+
+    $( function(){
+        $( ".div1" ).droppable({
+            drop: function() {
+                alert( "dropped" );
+                $(this).addClass("active");
+            },
+            out: function() {
+                $(this).removeClass("active");
+            }
+        })
+    })
+        //
+		// $('.div2').draggable();
+		// $('.div1').droppable({
+		// 	drop: function(){$(this).addClass('active');},
+		// 	out: function(){$(this).removeClass('active');}
+		// });
+	</script>
+</body>
+</html>
