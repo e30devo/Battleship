@@ -1,0 +1,59 @@
+
+	/*-------------------------------------
+	| gameboard
+	-------------------------------------*/
+
+	.board { display: flex; justify-content: center;}
+
+	.grid {
+		position: relative;
+		margin: 50px 20px;
+		width: 520px; height: 520px;
+		padding: 0;
+	}
+
+	.player {
+		width: 550px;
+		margin: 0 auto;
+	}
+
+	.snap {
+		width: 500px;
+		height: 500px;
+		position: absolute;
+		top: 8px; left: 8px;
+		border: solid 1px red;
+	}
+
+	.block {
+		width: 50px; height: 50px;;
+		float: left;
+		border-style: solid;
+		border-width: 1px;
+		border-color: blue;
+		border-radius: 1px;
+	}
+
+	.water { width: 100%;}
+
+	.occupied { opacity: .5;}
+
+	.opponent .snap { display: none;}
+
+	/*-------------------------------------
+	| ship
+	-------------------------------------*/
+
+	.ship {
+		border: solid 1px red;
+		z-index: 10; /* on top of grid -------------------------------*/
+	}
+
+	.ship img { width: 100%; height: 100%;}
+
+	#ship1 { width: 235px; height: 30px;}
+	#ship2 { width: 188px; height: 30px;}
+	#ship3 { width: 141px; height: 30px;}
+	#ship4 { width: 141px; height: 30px;}
+	#ship5 { width: 94px; height: 30px;}
+
