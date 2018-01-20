@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	firebase.initializeApp(config);
+	
 	var auth = firebase.auth();
 	var database = firebase.database();
 	var email;
@@ -46,7 +46,6 @@ $(document).ready(function(){
 	firebase.auth().onAuthStateChanged(function(user) {
 	  if (user) {
 	  	loginFlow();
-	    console.log(user);
 	  } else {
 	  	modalCall();
 	    console.log("no user");
@@ -65,7 +64,6 @@ $(document).ready(function(){
 		if (isValidEmail(emailA) === true) {
 			if (doTheyMatch(emailA, emailB) === true){
 				if (passwordA.length > 7){
-					console.log(passwordA.length > 7);
 					if(doTheyMatch(passwordA, passwordB) === true) {
 						firebase.auth().createUserWithEmailAndPassword(emailA, passwordA)
 							.then(function(user) {
@@ -105,7 +103,6 @@ $(document).ready(function(){
 		if (isValidEmail(email) === true){ 
 			firebase.auth().signInWithEmailAndPassword(email, password)
 				.then(function(user) {
-					console.log(user.email);
 					$("#myModalSignIn").modal('hide');
 				})
 				.catch(function(error) {
