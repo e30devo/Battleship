@@ -1,4 +1,3 @@
-
 	/*-------------------------------------
 	| gameboard
 	-------------------------------------*/
@@ -76,8 +75,23 @@
 
 	.rotate { transform: rotate(90deg);}
 
+
 	#ship1 { width: 240px; height: 32px; top: 9px;}
 	#ship2 { width: 188px; height: 32px; top: 62px;}
 	#ship3 { width: 137px; height: 32px; top: 114px;}
 	#ship4 { width: 137px; height: 32px; top: 166px;}
 	#ship5 { width: 84px; height: 32px; top: 218px;}
+
+
+/*-----------------
+| Login/ Logout
+------------------*/
+.hideLogout {
+	visibility: hidden;
+}
+
+.showLogout {
+	visibility: visible;
+}
+
+
