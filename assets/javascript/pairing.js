@@ -41,7 +41,10 @@ $(document).ready(function() {
                 database.ref("/Game_" + i).update({
                     playerOne: userEmail,
                 })
+
+                $(".playerName").html(userEmail);
                 gamePath = "/Game_" + i + "/playerOne";
+                  
                 database.ref(gamePath).onDisconnect().remove();
                 $("#signOut").attr("data-whoami", gamePath);
                 return 
@@ -53,6 +56,9 @@ $(document).ready(function() {
                         database.ref("/Game_" + i).update({
                         playerOne: userEmail,
                         })
+
+
+                        $(".playerName").text(userEmail);
                         
                         gamePath = "/Game_" + i + "/playerOne";
                         database.ref(gamePath).onDisconnect().remove();
