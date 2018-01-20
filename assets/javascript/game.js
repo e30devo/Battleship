@@ -21,24 +21,18 @@ for (var i = 0; i < playerGrid; i++) {
 	var div = $("<div>");
 	var img = $("<img>");
 	var imgSrc = "./assets/images/waterTile.jpg";
-	var optImg = "./assets/images/waterTile.jpg";
+
 	img.addClass("water");
 	img.attr("src", imgSrc);
-	// img.attr("data", [i]);
-	img.attr("option", );
+
+	div.attr("index", [i]);
 	div.addClass('block');
-	div.attr('id','block'+[i]);
-
 	div.append(img);
-	$(".player").append(div);
-}
 
-$(".waterTile").on("click", function() {
-	var src = $(this).attr("src");
-	var optImg = $(this).attr("optImg");
-	$(this).attr("data", optImg.replace(optImg, src));
-	$(this).attr("src", src.replace(src, optImg));
-});
+	$(".player").append(div);
+
+	$('.board .player div').attr('id','block'+[i]);
+}
 
 /*-------------------------------------
 | snap to grid
@@ -49,17 +43,22 @@ $('.block').append(snapGrid);
 
 $('.ship').draggable({
 	grid: [ 52, 52 ],
-	snap: ".snapGrid",
-	snapMode: 'inner'
+	snap: '.snapGrid',
+	snapMode: 'inner',
+	containment: '.player'
 });
 
 /*-------------------------------------
-| place and confirm
+| place/ confirm/ reset
 -------------------------------------*/
+// NOTE: need to relocate reset
 
 $('#confirm').on('click', function(){
-	database.ref('location').remove();
+	database.ref('player1').remove();
+	database.ref('player1-guess').remove();
+
 	$('.block').removeClass('hasShip');
+	$('.guess').detach();
 
 	for(var i=1; i< 6; i++){
 		shipId = 'ship'+i;
@@ -97,7 +96,7 @@ function overlap(blockId) {
 		$('#'+blockId).addClass('occupied');
 
 		/* push block location to database -------------------------------*/
-		database.ref('location').push(blockId);
+		database.ref('player1').push(blockId);
 	}
 }
 
@@ -105,15 +104,15 @@ function overlap(blockId) {
 | duplicate board
 -------------------------------------*/
 
-var newGrid = $('.board').html();
-$('.board').append(newGrid);
+var opGrid = $('.board').html();
+$('.board').append(opGrid);
 $('.player:eq(1)').addClass('opponent');
 $('.opponent .water').css('opacity',.6);
 
 /* change opponent block id -------------------------------*/
 for(var i = 0; i < playerGrid; i++){
-	var newId = 'op-block'+i
-	$('.opponent .block:eq('+ i +')').attr('id', newId);
+	var opId = 'op-block'+i
+	$('.opponent .block:eq('+ i +')').attr('id', opId);
 	$('.opponent .snapGrid').detach();
 }
 
@@ -121,7 +120,7 @@ for(var i = 0; i < playerGrid; i++){
 | download opponent ship location
 -------------------------------------*/
 
-database.ref('location').on('child_added', function(snapshot){
+database.ref('player1').on('child_added', function(snapshot){
 	var opBlockId = 'op-' + snapshot.val();
 
 	$('#'+opBlockId).addClass('hasShip');
@@ -132,16 +131,50 @@ database.ref('location').on('child_added', function(snapshot){
 -------------------------------------*/
 
 $(document).on('click', '.opponent .block',function(){
+	var guessId = 'block' + $(this).attr('index');
 	var hasShip = $(this).hasClass('hasShip');
 
 	if(hasShip){
-		var hitSrc = 'assets/images/hit.png';
+		var hitSrc = './assets/images/hit.png';
 		$(this).find('.water').attr('src', hitSrc).css('opacity',1);
-		console.log('hit');
 	} else {
-		var missSrc = 'assets/images/miss.png';
+		var missSrc = './assets/images/miss.png';
 		$(this).find('.water').attr('src', missSrc).css('opacity',1);
-		console.log('miss');
+	}
+
+	database.ref('player1-guess').push(guessId);
+	console.log(guessId);
+});
+
+database.ref('player1-guess').on('child_added', function(snapshot){
+	var guessId = snapshot.val();
+	var hasShip = $('#' + guessId).hasClass('occupied');
+
+	if(hasShip){
+		var hitImg = '<img class="guess" src="./assets/images/hit.png">';
+		$('#' + guessId).prepend(hitImg);
+	} else {
+		var missImg = '<img class="guess" src="./assets/images/miss.png">';
+		$('#' + guessId).prepend(missImg);
+	}
+});
+
+/*-------------------------------------
+| click to rotate
+-------------------------------------*/
+
+$('.ship').on('click', function(){
+	var rotate = $(this).attr('rotate');
+	var size = $(this).attr('size');
+
+	if (rotate === 'false') {
+		$(this).attr('rotate', 'true');
+		$(this).css('height',size).css('width','32px');
+		$(this).find('img').attr('src','./assets/images/ship1-v.png');
+	} else {
+		$(this).attr('rotate', 'false');
+		$(this).css('height','32px').css('width',size);
+		$(this).find('img').attr('src','./assets/images/ship1.png');
 	}
 });
 

@@ -5,16 +5,24 @@
 
 	/* contains two boards and all ships -------------------------------*/
 	.game {
+		position: relative;
 		border: solid 1px red;
 		width: 1080px; height: 520px;
 		margin: 20px auto;
-		position: relative;
 	}
 
 	/* contains two boards -------------------------------*/
 	.board {
 		display: flex;
 		justify-content: space-between;
+	}
+
+	.blocker {
+		display: flex;
+		justify-content: space-between;
+		position: absolute;
+		top: 0; left: 0;
+		width: 1080px;
 	}
 
 	/* player board -------------------------------*/
@@ -46,6 +54,12 @@
 
 	.occupied { opacity: .5;}
 
+	.guess {
+		width: 100%; height: 100%;
+		position: absolute;
+		top: 0; left: 0;
+	}
+
 	/*-------------------------------------
 	| ship
 	-------------------------------------*/
@@ -58,6 +72,8 @@
 	}
 
 	.ship img { width: 100%; height: 100%;}
+
+	.rotate { transform: rotate(90deg);}
 
 	#ship1 { width: 240px; height: 32px; top: 9px;}
 	#ship2 { width: 188px; height: 32px; top: 62px;}
