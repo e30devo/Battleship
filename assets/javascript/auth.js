@@ -124,16 +124,16 @@ $(document).ready(function(){
 		
 	});
 
-	$("#signOut").on("click", function(event) {
-		event.preventDefault(event);
+	$("#signOut").on("click", function() {
+        var whoAmI = $(this).attr("data-whoami");
+        firebase.auth().signOut().then(function() {
+          console.log("Sign Out Successful");
+          database.ref(whoAmI).remove();
+        }).catch(function(error) {
+          console.log("Sign Out Failed");
+        });
 
-		firebase.auth().signOut().then(function() {
-		  console.log("Sign Out Successful");
-		}).catch(function(error) {
-		  console.log("Sign Out Failed");
-		});
-
-	});
+    });
 
 	//switch to sign up
 	$(".signUpSwitch").on("click", function(){
