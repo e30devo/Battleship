@@ -41,6 +41,8 @@ $(document).ready(function() {
                 database.ref("/Game " + i).update({
                     playerOne: userEmail,
                 })
+                $(".playerName").html(userEmail);
+                
                 gamePath = "/Game " + i + "/playerOne";
                 database.ref(gamePath).onDisconnect().remove();
                 return 
@@ -52,7 +54,8 @@ $(document).ready(function() {
                         database.ref("/Game " + i).update({
                         playerOne: userEmail,
                         })
-                        
+
+                        $(".playerName").text(userEmail);
                         gamePath = "/Game " + i + "/playerOne";
                         database.ref(gamePath).onDisconnect().remove();
                         return
