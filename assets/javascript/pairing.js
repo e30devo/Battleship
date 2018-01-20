@@ -1,13 +1,5 @@
 $(document).ready(function() {
 
-    var config = {
-        apiKey: "AIzaSyByKWWnishzXkEbqb5IcHFMZhLOJNwImrs",
-        authDomain: "myfirstproject-bb1fa.firebaseapp.com",
-        databaseURL: "https://myfirstproject-bb1fa.firebaseio.com",
-        projectId: "myfirstproject-bb1fa",
-        storageBucket: "myfirstproject-bb1fa.appspot.com",
-        messagingSenderId: "11954546478"
-    };
     firebase.initializeApp(config);
     console.log("working");
     // Create a variable to reference the database.
