@@ -52,7 +52,6 @@ $('.ship').draggable({
 // NOTE: need to relocate reset
 
 $('#confirm').on('click', function(){
-
 	database.ref('player1').remove();
 	database.ref('player1-guess').remove();
 
