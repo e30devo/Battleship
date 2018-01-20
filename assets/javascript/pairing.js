@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-    firebase.initializeApp(config);
+    
     console.log("working");
     // Create a variable to reference the database.
     var database = firebase.database();
@@ -10,9 +10,22 @@ $(document).ready(function() {
     var userUID;
 
     console.log("On page load, userSigned in is: " + userSignedIn);
-
+    firebase.auth().onAuthStateChanged(function(userSignedIn) {
+        if (userSignedIn) {
+            // pulls user email and unique ID fron the returned user object
+            userEmail = userSignedIn.email;
+            userUID = userSignedIn.G
+                console.log(userEmail);
+                console.log(userUID);
+            // calls the assignGame function
+            assignGame();
+            } else {
+            // No user is signed in console logs...well you see
+            console.log("no user signed in");
+        }
+    });
     // takes the user email and pasword from the log in form
-    $(".login form").on("submit", function(event){
+    /*$(".login form").on("submit", function(event){
         event.preventDefault();
         // sets the info to variables
         var email = $(".login .email").val();
@@ -52,7 +65,7 @@ $(document).ready(function() {
             console.error('Sign Out Error', error);
           });
           
-    })
+    })*/
 
     // this function runs a loop that assigns the player to a game
     function assignGame(){
@@ -88,4 +101,6 @@ $(document).ready(function() {
             }
         })
     }
+
+
 });
