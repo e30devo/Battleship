@@ -37,7 +37,8 @@ $(document).ready(function(){
 	};
 
 	function loginFlow() {
-		$("#myModal").modal('hide');
+		$("#myModalSignIn").modal('hide');
+		$("#myModalSignUp").modal('hide');
 		$("#signOut").addClass("showLogout");
 		clearFields();
 	}
@@ -55,7 +56,7 @@ $(document).ready(function(){
 
 	$("#signUp").on("click", function(event) {
 		event.preventDefault();
-
+		$(".userPrompt").text("");
 		emailA = $("#emailA").val();
 		emailB = $("#emailB").val();
 		passwordA = $("#passwordA").val();
@@ -78,6 +79,7 @@ $(document).ready(function(){
 									default:
 										console.log(error.code);
 						  		}
+
 						});
 					} else {
 						$(".userPrompt").text("Your Passwords Do Not Match");
