@@ -69,8 +69,8 @@ $(document).ready(function() {
             // runs a hard set for loop that will create or check no more than 10 games
             for (var i = 1; i < 11; i++) {
                 // sets an existence check to the existence of a game branch numbered Game "i"
-                var gameExists = snapshot.child("/Game " + "'" + i + "'").exists();
-                var gamePlayers = snapshot.child("/Game " + "'" + i + "'").numChildren();
+                var gameExists = snapshot.child("/Game " + i).exists();
+                var gamePlayers = snapshot.child("/Game " + i).numChildren();
                 var playerTwoExists = snapshot.child("/Game " + i + "/playerTwo").exists();
                 // if that game number does NOT exists, it is created and the user is place as player one and for loop exits
                 if (!gameExists) {
