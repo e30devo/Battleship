@@ -1,7 +1,9 @@
 	/*-------------------------------------
 	| gameboard
 	-------------------------------------*/
-
+	body {
+		font-family: 'Lato', sans-serif;
+	}
 	/* contains two boards and all ships -------------------------------*/
 	.game {
 		position: relative;
@@ -81,16 +83,5 @@
 	#ship4 { width: 137px; height: 32px; top: 166px;}
 	#ship5 { width: 84px; height: 32px; top: 218px;}
 
-
-/*-----------------
-| Login/ Logout
-------------------*/
-.hideLogout {
-	visibility: hidden;
-}
-
-.showLogout {
-	visibility: visible;
-}
 
 
