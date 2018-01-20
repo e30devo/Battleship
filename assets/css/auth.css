@@ -1,0 +1,8 @@
+
+.hideLogout {
+	visibility: hidden;
+}
+
+.showLogout {
+	visibility: visible;
+}

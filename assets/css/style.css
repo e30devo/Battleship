@@ -82,15 +82,4 @@
 	#ship5 { width: 84px; height: 32px; top: 218px;}
 
 
-/*-----------------
-| Login/ Logout
-------------------*/
-.hideLogout {
-	visibility: hidden;
-}
-
-.showLogout {
-	visibility: visible;
-}
-
 
