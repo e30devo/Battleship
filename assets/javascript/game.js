@@ -52,6 +52,7 @@ $('.ship').draggable({
 // NOTE: need to relocate reset
 
 $('#confirm').on('click', function(){
+
 	database.ref('player1').remove();
 	database.ref('player1-guess').remove();
 
@@ -123,11 +124,11 @@ $('.screen .player .snapGrid').detach();
 
 var opScreen = $('.screen').html();
 $('.screen').append(opScreen);
-$('.screen .player:eq(1)').addClass('oponent');
+$('.screen .player:eq(1)').addClass('opponent');
 
 for (var i = 0; i < playerGrid; i++) {
 	$('.screen .player .block:eq(' + [i] + ')').attr('id','screen' + [i] + '');
-	$('.screen .oponent .block:eq(' + [i] + ')').attr('id','opScreen' + [i] + '');
+	$('.screen .opponent .block:eq(' + [i] + ')').attr('id','opScreen' + [i] + '');
 }
 
 /*-------------------------------------
