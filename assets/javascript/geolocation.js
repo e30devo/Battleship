@@ -17,7 +17,7 @@ $(document).ready(function() {
 
       $.ajax({
         url: queryPath + latLong + apiKey + locality,
-        method: "GET"
+        method: "GET",
       }).done(function(response) {
         console.log(response);
 
