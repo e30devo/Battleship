@@ -44,9 +44,14 @@ $(document).ready(function() {
 
                 $(".playerName").html(userEmail);
                 gamePath = "/Game_" + i + "/playerOne";
-                  
+                
                 database.ref(gamePath).onDisconnect().remove();
                 $("#signOut").attr("data-whoami", gamePath);
+                var game = "Game_" + i;
+                var player = "playerOne";
+                $("#signOut").attr("data-game", game);
+                $("#signOut").attr("data-player", player);
+
                 return 
                 }
                 // if the game DOES exists AND there are less than two player in it, user is placed in game at player two
@@ -63,6 +68,10 @@ $(document).ready(function() {
                         gamePath = "/Game_" + i + "/playerOne";
                         database.ref(gamePath).onDisconnect().remove();
                         $("#signOut").attr("data-whoami", gamePath);
+                        var game = "Game_" + i;
+                        var player = "playerOne";
+                        $("#signOut").attr("data-game", game);
+                        $("#signOut").attr("data-player", player);
                         return
                     }
                     else {
@@ -73,6 +82,10 @@ $(document).ready(function() {
                         gamePath = "/Game_" + i + "/playerTwo";   
                         database.ref(gamePath).onDisconnect().remove();
                         $("#signOut").attr("data-whoami", gamePath);
+                        var game = "Game_" + i;
+                        var player = "playerTwo";
+                        $("#signOut").attr("data-game", game);
+                        $("#signOut").attr("data-player", player);
                         return
                     }
 
@@ -82,6 +95,10 @@ $(document).ready(function() {
                         gamePath = "/Game_" + i + "/playerTwo";
                         database.ref(gamePath).onDisconnect().remove();
                         $("#signOut").attr("data-whoami", gamePath);
+                        var game = "Game_" + i;
+                        var player = "playerTwo";
+                        $("#signOut").attr("data-game", game);
+                        $("#signOut").attr("data-player", player);
                         return gamePath
                     }
 
