@@ -21,17 +21,15 @@ for (var i = 0; i < playerGrid; i++) {
 	var div = $("<div>");
 	var img = $("<img>");
 	var imgSrc = "./assets/images/waterTile.jpg";
-
+	var optImg = "./assets/images/waterTile.jpg";
 	img.addClass("water");
 	img.attr("src", imgSrc);
-
 	div.attr("index", [i]);
 	div.addClass('block');
+	div.attr('id','block'+[i]);
+
 	div.append(img);
-
 	$(".player").append(div);
-
-	$('.board .player div').attr('id','block'+[i]);
 }
 
 /*-------------------------------------
@@ -54,6 +52,7 @@ $('.ship').draggable({
 // NOTE: need to relocate reset
 
 $('#confirm').on('click', function(){
+
 	database.ref('player1').remove();
 	database.ref('player1-guess').remove();
 
@@ -104,16 +103,32 @@ function overlap(blockId) {
 | duplicate board
 -------------------------------------*/
 
-var opGrid = $('.board').html();
-$('.board').append(opGrid);
+var newGrid = $('.board').html();
+$('.board').append(newGrid);
 $('.player:eq(1)').addClass('opponent');
 $('.opponent .water').css('opacity',.6);
 
 /* change opponent block id -------------------------------*/
 for(var i = 0; i < playerGrid; i++){
-	var opId = 'op-block'+i
-	$('.opponent .block:eq('+ i +')').attr('id', opId);
+	var newId = 'op-block'+i
+	$('.opponent .block:eq('+ i +')').attr('id', newId);
 	$('.opponent .snapGrid').detach();
+}
+
+/*-------------------------------------
+| inset screen
+-------------------------------------*/
+
+$('.screen .player .water').detach();
+$('.screen .player .snapGrid').detach();
+
+var opScreen = $('.screen').html();
+$('.screen').append(opScreen);
+$('.screen .player:eq(1)').addClass('oponent');
+
+for (var i = 0; i < playerGrid; i++) {
+	$('.screen .player .block:eq(' + [i] + ')').attr('id','screen' + [i] + '');
+	$('.screen .oponent .block:eq(' + [i] + ')').attr('id','opScreen' + [i] + '');
 }
 
 /*-------------------------------------
@@ -124,39 +139,6 @@ database.ref('player1').on('child_added', function(snapshot){
 	var opBlockId = 'op-' + snapshot.val();
 
 	$('#'+opBlockId).addClass('hasShip');
-});
-
-/*-------------------------------------
-| hit and sink
--------------------------------------*/
-
-$(document).on('click', '.opponent .block',function(){
-	var guessId = 'block' + $(this).attr('index');
-	var hasShip = $(this).hasClass('hasShip');
-
-	if(hasShip){
-		var hitSrc = './assets/images/hit.png';
-		$(this).find('.water').attr('src', hitSrc).css('opacity',1);
-	} else {
-		var missSrc = './assets/images/miss.png';
-		$(this).find('.water').attr('src', missSrc).css('opacity',1);
-	}
-
-	database.ref('player1-guess').push(guessId);
-	console.log(guessId);
-});
-
-database.ref('player1-guess').on('child_added', function(snapshot){
-	var guessId = snapshot.val();
-	var hasShip = $('#' + guessId).hasClass('occupied');
-
-	if(hasShip){
-		var hitImg = '<img class="guess" src="./assets/images/hit.png">';
-		$('#' + guessId).prepend(hitImg);
-	} else {
-		var missImg = '<img class="guess" src="./assets/images/miss.png">';
-		$('#' + guessId).prepend(missImg);
-	}
 });
 
 /*-------------------------------------
@@ -177,5 +159,40 @@ $('.ship').on('click', function(){
 		$(this).find('img').attr('src','./assets/images/ship1.png');
 	}
 });
+
+/*-------------------------------------
+| hit and sink
+-------------------------------------*/
+
+var hitSrc = './assets/images/hit.png';
+var missSrc = './assets/images/miss.png';
+
+$(document).on('click', '.opponent .block',function(){
+
+	var guessIndex = $(this).attr('index');
+	var hasShip = $(this).hasClass('hasShip');
+
+	if(hasShip){
+		$('#opScreen'+guessIndex).append('<img class="guess" src="'+ hitSrc +'">');
+	} else {
+		$('#opScreen'+guessIndex).append('<img class="guess" src="'+ missSrc +'">');
+	}
+
+	database.ref('player1-guess').push(guessIndex);
+	console.log(guessIndex);
+});
+
+database.ref('player1-guess').on('child_added', function(snapshot){
+	var guessIndex = snapshot.val();
+	var hasShip = $('#block' + guessIndex).hasClass('occupied');
+
+	if(hasShip){
+		$('#screen'+guessIndex).append('<img class="guess" src="'+ hitSrc +'">');
+	} else {
+		console.log('miss');
+		$('#screen'+guessIndex).append('<img class="guess" src="'+ missSrc +'">');
+	}
+});
+
 
 }); //document.ready close
