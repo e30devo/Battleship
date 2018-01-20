@@ -83,15 +83,5 @@ $(document).ready(function() {
             })
     }
 
-    $("#signOut").on("click", function() {
-        var whoAmI = $(this).attr("data-whoami");
-        firebase.auth().signOut().then(function() {
-          console.log("Sign Out Successful");
-          database.ref(whoAmI).remove();
-        }).catch(function(error) {
-          console.log("Sign Out Failed");
-        });
-
-    });
     
 });
