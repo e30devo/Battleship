@@ -13,7 +13,7 @@ var playerGrid = xAxis.length * yAxis.length;
 
 var database = firebase.database();
 
-var opShip = [];
+$('.screen img').detach();
 
 /*-------------------------------------
 | print grid
@@ -29,7 +29,7 @@ for (var i = 0; i < xAxis.length; i++) {
 		var water = $('<img src="./assets/images/waterTile.jpg">');
 
 		playerBlock.attr('id', xAxis[i]+ yAxis[j]).attr('index', xAxis[i]+yAxis[j]);
-		playerGrid.attr('id', 'sceen'+ xAxis[i]+ yAxis[j]).attr('index', xAxis[i]+yAxis[j]);
+		playerGrid.attr('id', 'screen'+ xAxis[i]+ yAxis[j]).attr('index', xAxis[i]+yAxis[j]);
 		opponentBlock.attr('id', 'op'+xAxis[i]+ yAxis[j]).attr('index', xAxis[i]+yAxis[j]);
 
 		$('.board .player').append(playerBlock);
@@ -156,13 +156,13 @@ $(document).on('click', '.opponent .block',function(){
 
 		var whichShip;
 
-		if(-1< hit <2){ /* 0,1---------*/
+		if(-1< hit && hit<2){ /* 0,1---------*/
 			whichShip = 'ship1';
-		} else if (1< hit <5){ /* 2,3,4---------*/
+		} else if (1< hit && hit<5){ /* 2,3,4---------*/
 			whichShip = 'ship2';
-		} else if (4< hit <8){ /* 5,6,7---------*/
+		} else if (4< hit && hit<8){ /* 5,6,7---------*/
 			whichShip = 'ship3';
-		} else if (7< hit <12){ /* 8,9,10,11---------*/
+		} else if (7< hit && hit<12){ /* 8,9,10,11---------*/
 			whichShip = 'ship4';
 		} else { /* 12,13,14,15,16---------*/
 			whichShip ='ship5';
@@ -173,28 +173,34 @@ $(document).on('click', '.opponent .block',function(){
 		});
 
 		database.ref('player1/'+ whichShip + '/' + blockIndex).remove();
-
-		console.log(whichShip);
 	}
 });
 
 /*-------------------------------------
-| title
+| opponent's hit
 -------------------------------------*/
 
-var opShipStatus = [true, true, true, true, true];
+database.ref('player1-guess').on('child_added', function(snapshot){
+	var blockIndex = snapshot.key;
+	var status = snapshot.val().status;
 
-database.ref().on('child_removed', function(snapshot){
-	// for(var i=1; i<6; i++){
-	// 	var exist = snapshot.child('ship'+i).exists();
-	// 	console.log(i, exist);
-  //
-	// 	if(!exist && opShipStatus[i] == true){
-	// 		opShipStatus[i] = false;
-	// 		console.log('ship' + i + 'sunk');
-	// 	}
-  //
-	// }
+	var hitSrc = './assets/images/hit.png';
+	var missSrc = './assets/images/miss.png';
+
+	if(status ==='miss'){
+		$('#screen'+blockIndex).append('<img src="' + missSrc + '">');
+	} else {
+		$('#screen'+blockIndex).append('<img src="' + hitSrc + '">');
+	}
 });
+
+/*-------------------------------------
+| sink and defeat
+-------------------------------------*/
+
+database.ref('player1').on('child_removed', function(oldChildSnapshot) {
+  console.log('You sink' + oldChildSnapshot.key);
+});
+
 
 }); //document.ready close
