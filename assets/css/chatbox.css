@@ -1,9 +1,8 @@
-li {
+/* li {
     list-style: none;
-}
+} */
 
-.chatHistory {
-    margin: 20px;
+.chatHistory {    
     font-size: 80%;
     border-width: 2px;
     border-color: black;
