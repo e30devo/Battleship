@@ -81,8 +81,8 @@ $(document).ready(function(){
 					if(doTheyMatch(passwordA, passwordB) === true) {
 						firebase.auth().createUserWithEmailAndPassword(emailA, passwordA)
 							.then(function(user) {
-								loginFlow();
-								registerUser(user);							
+								loginFlow(); 
+								registerUser(user);
 							})
 							.catch(function(error) {
 						  		switch (error.code) {
