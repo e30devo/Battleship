@@ -1,26 +1,36 @@
 	/*-------------------------------------
 	| gameboard
 	-------------------------------------*/
-
-	.board { display: flex; justify-content: center;}
-
-	.grid {
+	body {
+		font-family: 'Lato', sans-serif;
+	}
+	/* contains two boards and all ships -------------------------------*/
+	.game {
 		position: relative;
-		margin: 50px 20px;
-		width: 520px; height: 520px;
-		padding: 0;
+		border: solid 1px red;
+		width: 1080px; height: 520px;
+		margin: 20px auto;
 	}
 
+	/* contains two boards -------------------------------*/
+	.board {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.screen {
+		display: flex;
+		justify-content: space-between;
+		/* position: absolute; */
+		/* top: 0; left: 0; */
+		width: 1080px;
+		z-index: 20; /* ship:10 -------------------------------*/
+	}
+
+	/* player board -------------------------------*/
 	.player {
-		width: 550px;
-		margin: 0 auto;
-	}
-
-	.snap {
-		width: 500px;
-		height: 500px;
-		position: absolute;
-		top: 8px; left: 8px;
+		width: 520px;
+		margin: 0;
 		border: solid 1px red;
 	}
 
@@ -31,40 +41,48 @@
 		border-width: 1px;
 		border-color: blue;
 		border-radius: 1px;
+		position: relative;
+	}
+
+	.snapGrid {
+		width: 32px; height: 32px;
+		position: absolute;
+		top: 8px; left: 8px;
+		border: solid 1px green;
+		opacity: 0;
 	}
 
 	.water { width: 100%;}
 
 	.occupied { opacity: .5;}
 
-	.opponent .snap { display: none;}
+	.guess {
+		width: 100%; height: 100%;
+		position: absolute;
+		top: 0; left: 0;
+	}
 
 	/*-------------------------------------
 	| ship
 	-------------------------------------*/
 
 	.ship {
+		position: absolute;
+		left: 9px;
 		border: solid 1px red;
 		z-index: 10; /* on top of grid -------------------------------*/
 	}
 
 	.ship img { width: 100%; height: 100%;}
 
-	#ship1 { width: 235px; height: 30px;}
-	#ship2 { width: 188px; height: 30px;}
-	#ship3 { width: 141px; height: 30px;}
-	#ship4 { width: 141px; height: 30px;}
-	#ship5 { width: 94px; height: 30px;}
+	.rotate { transform: rotate(90deg);}
 
 
-/*-----------------
-| Login/ Logout
-------------------*/
-.hideLogout {
-	visibility: hidden;
-}
+	#ship1 { width: 240px; height: 32px; top: 9px;}
+	#ship2 { width: 188px; height: 32px; top: 62px;}
+	#ship3 { width: 137px; height: 32px; top: 114px;}
+	#ship4 { width: 137px; height: 32px; top: 166px;}
+	#ship5 { width: 84px; height: 32px; top: 218px;}
 
-.showLogout {
-	visibility: visible;
-}
+
 

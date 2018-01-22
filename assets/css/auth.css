@@ -1,0 +1,11 @@
+
+.hideLogout {
+	visibility: hidden;
+}
+
+.showLogout {
+	visibility: visible;
+}
+.modal-footer {
+	justify-content: space-between;
+}

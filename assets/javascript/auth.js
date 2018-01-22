@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	firebase.initializeApp(config);
+	
 	var auth = firebase.auth();
 	var database = firebase.database();
 	var email;
@@ -37,7 +37,8 @@ $(document).ready(function(){
 	};
 
 	function loginFlow() {
-		$("#myModal").modal('hide');
+		$("#myModalSignIn").modal('hide');
+		$("#myModalSignUp").modal('hide');
 		$("#signOut").addClass("showLogout");
 		clearFields();
 	}
@@ -45,7 +46,6 @@ $(document).ready(function(){
 	firebase.auth().onAuthStateChanged(function(user) {
 	  if (user) {
 	  	loginFlow();
-	    console.log(user);
 	  } else {
 	  	modalCall();
 	    console.log("no user");
@@ -55,7 +55,7 @@ $(document).ready(function(){
 
 	$("#signUp").on("click", function(event) {
 		event.preventDefault();
-
+		$(".userPrompt").text("");
 		emailA = $("#emailA").val();
 		emailB = $("#emailB").val();
 		passwordA = $("#passwordA").val();
@@ -64,7 +64,6 @@ $(document).ready(function(){
 		if (isValidEmail(emailA) === true) {
 			if (doTheyMatch(emailA, emailB) === true){
 				if (passwordA.length > 7){
-					console.log(passwordA.length > 7);
 					if(doTheyMatch(passwordA, passwordB) === true) {
 						firebase.auth().createUserWithEmailAndPassword(emailA, passwordA)
 							.then(function(user) {
@@ -78,6 +77,7 @@ $(document).ready(function(){
 									default:
 										console.log(error.code);
 						  		}
+
 						});
 					} else {
 						$(".userPrompt").text("Your Passwords Do Not Match");
@@ -103,7 +103,6 @@ $(document).ready(function(){
 		if (isValidEmail(email) === true){ 
 			firebase.auth().signInWithEmailAndPassword(email, password)
 				.then(function(user) {
-					console.log(user.email);
 					$("#myModalSignIn").modal('hide');
 				})
 				.catch(function(error) {
@@ -125,16 +124,16 @@ $(document).ready(function(){
 		
 	});
 
-	$("#signOut").on("click", function(event) {
-		event.preventDefault(event);
+	$("#signOut").on("click", function() {
+        var whoAmI = $(this).attr("data-whoami");
+        firebase.auth().signOut().then(function() {
+          console.log("Sign Out Successful");
+          database.ref(whoAmI).remove();
+        }).catch(function(error) {
+          console.log("Sign Out Failed");
+        });
 
-		firebase.auth().signOut().then(function() {
-		  console.log("Sign Out Successful");
-		}).catch(function(error) {
-		  console.log("Sign Out Failed");
-		});
-
-	});
+    });
 
 	//switch to sign up
 	$(".signUpSwitch").on("click", function(){
