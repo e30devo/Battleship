@@ -8,9 +8,10 @@ $(document).ready(function() {
 
         var message = $(".chatbox").val();
         var thisGame = $(".hideLogout").attr("data-game");
+        var thisPlayer = $(".hideLogout").attr("data-player");
 
         database.ref("/" + thisGame + "/chat").push({
-          message: message
+          message: [thisPlayer] + ": " + message
         });
 
         //clears chatbox for next message
@@ -22,7 +23,6 @@ $(document).ready(function() {
   //undefined on page load due to FB latency.
   database.ref().on("value", function(snapshot) {
     var thisGame = $(".hideLogout").attr("data-game");
-    var thisPlayer = $(".hideLogout").attr("data-player");
     var chatReference = database.ref("/" + [thisGame] + ["/chat"]);
 
     chatReference.on("value", function(snapshot) {
@@ -30,7 +30,7 @@ $(document).ready(function() {
       $(".chatHistory").empty();
       for (var i = 0; i < snapshot.numChildren(); i++) {
         $(".chatHistory").prepend(
-          "<li class='list-group-item'>" + thisPlayer + ": " +
+          "<li class='list-group-item'>" +
             snapshot.val()[uniqueChatMessage[i]]["message"] + "</li>");
       } //for loop closer
     }); //chatReference.on closer
