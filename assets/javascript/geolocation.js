@@ -6,8 +6,8 @@ $(document).ready(function() {
       var lat = position.coords.latitude;
       var lng = position.coords.longitude;
 
-      console.log(position);
-      console.log(position.coords.latitude, position.coords.longitude);
+      // console.log(position); //Leave in for debugging
+      // console.log(position.coords.latitude, position.coords.longitude); //Leave in for debugging
 
       var queryPath = "https://maps.googleapis.com/maps/api/geocode/json?";
       var latLong =
@@ -19,7 +19,7 @@ $(document).ready(function() {
         url: queryPath + latLong + apiKey + locality,
         method: "GET",
       }).done(function(response) {
-        console.log(response);
+        // console.log(response); //Leave in for debugging
 
         var location = response.results[7].formatted_address;
         console.log(location);

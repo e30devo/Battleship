@@ -4,17 +4,16 @@
     <title>Battleship!</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     <link rel="icon" type="image/gif" href="./assets/images/favicon.jpg">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy"
         crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="./assets/css/reset.css">
     <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
+
+    <link rel="stylesheet" type="text/css" href="./assets/css/chatbox.css">
     <link rel="stylesheet" type="text/css" href="./assets/css/auth.css">
-    <!-- <link rel="stylesheet" type="text/css" href="./assets/css/gridStyle.css"> -->
-
-
-    <script src="https://www.gstatic.com/firebasejs/4.8.2/firebase.js"></script>
+  
+    <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
     <script>
         // Initialize Firebase
         var config = {
@@ -27,9 +26,7 @@
         };
         firebase.initializeApp(config);
     </script>
-
     <script src="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.js"></script>
-
 
 </head>
 
@@ -78,6 +75,7 @@
             </div>
         </div>
     </div>
+
     <h1 id="confirm">Start!</h1>
 
         <div class="playerName"></div>
@@ -97,23 +95,35 @@
                 <div class="player"></div>
             </div>
         </div>
-		
+
+    <div class="chatHistory input-group"></div>
+      <div class="chatContainer">
+        <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">ChatBox!</span>
+            </div>
+            <input type="text" class="chatbox form-control" 
+            placeholder="Enter Message Here!" aria-describedby="basic-addon1">
+        </div>
+    </div>
+    
+	<!-- jquery and jquery.ui CDN -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
     crossorigin="anonymous"></script>
-
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+  
+    <!-- External js files. -->
     <script src="./assets/javascript/auth.js"></script>
-    <!-- <script src="./assets/javascript/battleshipGridlayout.js"></script> -->
     <script src="./assets/javascript/pairing.js"></script>
     <script src="./assets/javascript/geolocation.js"></script>
+    <script src="./assets/javascript/chat.js"></script>
     <script src="./assets/javascript/game.js"></script>
-    <!--Bootstrap 4.0-->
 
+    <!--Bootstrap 4.0-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4"
         crossorigin="anonymous"></script>
-
 
 </body>
 
