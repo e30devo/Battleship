@@ -3,15 +3,25 @@ $(document).ready(function(){
 
 
   var database = firebase.database();
+<<<<<<< Updated upstream
+  var thisGame = $("#signOut").attr("data-game")
+  console.log(thisGame);
+=======
 
+>>>>>>> Stashed changes
   database.ref().once("value", function(snapshot) {
       console.log(snapshot.val());
 
   }); 
 
 
+<<<<<<< Updated upstream
+  database.ref().on("child_added", function(snapshot) {
+    
+=======
   database.ref().on("child_added", function(snapshot, prevChildKey){
     console.log(snapshot.val(), prevChildKey);
+>>>>>>> Stashed changes
   })    
   $(".chatbox").keyup(function(event) {
     if (event.keyCode === 13) {
