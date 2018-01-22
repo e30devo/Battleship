@@ -1,70 +1,38 @@
-$(document).ready(function(){
-
-
-
+$(document).ready(function() {
   var database = firebase.database();
-<<<<<<< Updated upstream
-  var thisGame = $("#signOut").attr("data-game")
-  console.log(thisGame);
-=======
+  var thisGame = $(".hideLogout").attr("data-game");
 
->>>>>>> Stashed changes
-  database.ref().once("value", function(snapshot) {
-      console.log(snapshot.val());
-
-  }); 
-
-
-<<<<<<< Updated upstream
-  database.ref().on("child_added", function(snapshot) {
-    
-=======
-  database.ref().on("child_added", function(snapshot, prevChildKey){
-    console.log(snapshot.val(), prevChildKey);
->>>>>>> Stashed changes
-  })    
   $(".chatbox").keyup(function(event) {
     if (event.keyCode === 13) {
-        database.ref().once("value", function(snapshot) {
-         console.log(Object.keys(snapshot.val())); 
-        $(".chatbox").click()        
-        var message = $(".chatbox").val();        
-        $(".chatHistory").append("<li>" + message);
-        // database.ref().push({
-        //     prevChildKey, opponent: message
-        //   });
+      $(".chatbox").click();
+
+        var message = $(".chatbox").val();
+        var thisGame = $(".hideLogout").attr("data-game");
+
+        database.ref("/" + thisGame + "/chat").push({
+          message: message
         });
-    }
 
-});
-});
+        //clears chatbox for next message
+        $(".chatbox").val("");      
+    } //if closer
+  }); //.chatbox.keyup closer
 
-/////////////////////////////////////////////////////////////
-// $('#send-btn').on('click', function(){
-// 	var new_message = $('#message-input').val();
-// 	update_chat(new_message);
-// });
+  //Needed to reset these variables inside a function, thisGame returns
+  //undefined on page load due to FB latency.
+  database.ref().on("value", function(snapshot) {
+    var thisGame = $(".hideLogout").attr("data-game");
+    var thisPlayer = $(".hideLogout").attr("data-player");
+    var chatReference = database.ref("/" + [thisGame] + ["/chat"]);
 
-// function update_chat(new_message){
-// 	chat_messages.push(new_message);
-// 	if(chat_messages.length > 4){
-// 		chat_messages.splice(1,1);
-// 	}
-// 	database.ref().update({
-// 		chat: chat_messages
-// 	});
-// }
-
-
-// database.ref('chat').on('value', function(snapshot){
-// 	chat_messages = snapshot.val();
-// 	// console.log(chat_messages);
-// 	print_chat();
-// });
-
-// function print_chat(){
-// 	$('#control .chat-box').empty();
-// 	for(var i=0; i<chat_messages.length; i++){
-// 		$('#control .chat-box').append('<li class="list-group-item">' + chat_messages[i] + '</li>');
-// 	}
-// }
+    chatReference.on("value", function(snapshot) {
+      var uniqueChatMessage = Object.keys(snapshot.val());
+      $(".chatHistory").empty();
+      for (var i = 0; i < snapshot.numChildren(); i++) {
+        $(".chatHistory").prepend(
+          "<li class='list-group-item'>" + thisPlayer + ": " +
+            snapshot.val()[uniqueChatMessage[i]]["message"] + "</li>");
+      } //for loop closer
+    }); //chatReference.on closer
+  }); //database.ref closer
+}); //document.ready closer
