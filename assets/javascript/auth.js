@@ -43,6 +43,7 @@ $(document).ready(function(){
 		clearFields();
 	}
 
+	// builds player profile in database
 	function registerUser(user) {
 		var userEmail = user.email;
 		var UID = user.uid;
@@ -80,7 +81,7 @@ $(document).ready(function(){
 					if(doTheyMatch(passwordA, passwordB) === true) {
 						firebase.auth().createUserWithEmailAndPassword(emailA, passwordA)
 							.then(function(user) {
-								loginFlow();
+								loginFlow(); 
 								registerUser(user);
 							})
 							.catch(function(error) {
