@@ -72,7 +72,7 @@ $(document).ready(function(){
 							.catch(function(error) {
 						  		switch (error.code) {
 						  			case "auth/email-already-in-use":
-						  				$(".userPrompt").text("Email Already In Use");
+						  				$(".userPrompt").append("<p class='prompt'>Email Already In Use</p>");
 										break;
 									default:
 										console.log(error.code);
@@ -80,16 +80,16 @@ $(document).ready(function(){
 
 						});
 					} else {
-						$(".userPrompt").text("Your Passwords Do Not Match");
+						$(".userPrompt").append("<p class='prompt'>Your Passwords Do Not Match</p>");
 					}
 				} else {
-					$(".userPrompt").text("Your Password Is Less Than 8 Characters");
+					$(".userPrompt").append("<p class='prompt'>Your Password Is Less Than 8 Characters</p>");
 				}
 			} else {
-				$(".userPrompt").text("Your Emails Do Not Match");
+				$(".userPrompt").append("<p class='prompt'>Your Emails Do Not Match</p>");
 			}
 		} else {
-			$(".userPrompt").text("Invalid Email Address");
+			$(".userPrompt").append("<p class='prompt'>Invalid Email Address</p>");
 		}
 		
 	});
@@ -108,16 +108,16 @@ $(document).ready(function(){
 				.catch(function(error) {
 					switch (error.code) {
 						case "auth/user-not-found":
-							$(".userPrompt").text("Incorrect Email or Password");
+							$(".userPrompt").append("<p class='prompt'>Incorrect Email or Password</p>");
 							break;
 						case "auth/wrong-password":
-							$(".userPrompt").text("Incorrect Email or Password");
+							$(".userPrompt").append("<p class='prompt'>Incorrect Email or Password</p>");
 						default:
 							console.log(error.code);
 					}
 			});
 			} else {
-				$(".userPrompt").text("Invalid Email Address");
+				$(".userPrompt").append("<p class='prompt'>Invalid Email Address</p>");
 			}
 		
 		
@@ -137,14 +137,16 @@ $(document).ready(function(){
 
 	//switch to sign up
 	$(".signUpSwitch").on("click", function(){
-		$("#myModalLogin").modal('hide');
+		$("#myModalSignIn").modal('hide');
 		$("#myModalSignUp").modal(freezeModal);
+		$(".userPrompt").empty();
 		console.log("switch");
 	});
 
 	$(".signInSwitch").on("click", function(){
-		$("#myModalLogin").modal(freezeModal);
+		$("#myModalSignIn").modal(freezeModal);
 		$("#myModalSignUp").modal('hide');
+		$(".userPrompt").empty();
 		console.log("switch");
 	});
 
