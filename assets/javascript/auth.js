@@ -43,6 +43,25 @@ $(document).ready(function(){
 		clearFields();
 	}
 
+	function registerUser(user) {
+		var userEmail = user.email;
+		var UID = user.uid;
+		console.log(user)
+		console.log("hey now! " + userEmail);
+		console.log("hey now!!" + UID);
+		database.ref("/users/" + UID).update({
+				email: userEmail,
+				wins: 0,
+				losses: 0,
+		});
+		// database.ref("/users").push(UID);
+		// databse.ref("/users/" + UID).update({
+		// 	wins: 0,
+		// 	losses: 0,
+		// })
+		
+	}
+
 	firebase.auth().onAuthStateChanged(function(user) {
 	  if (user) {
 	  	loginFlow();
@@ -68,6 +87,8 @@ $(document).ready(function(){
 						firebase.auth().createUserWithEmailAndPassword(emailA, passwordA)
 							.then(function(user) {
 								loginFlow();
+								registerUser(user);
+							
 							})
 							.catch(function(error) {
 						  		switch (error.code) {
