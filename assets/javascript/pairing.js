@@ -1,5 +1,5 @@
 $(document).ready(function() {
-
+    
     console.log("working");
     // Create a variable to reference the database.
     var database = firebase.database();
@@ -22,13 +22,12 @@ $(document).ready(function() {
             // No user is signed in console logs...well you see
             console.log("no user signed in");
         }
-		$('#username').html(userEmail);
     });
 
     // this function runs a loop that assigns the player to a game
     function assignGame(){
 
-
+        
         // takes a snapshot of the current database
         database.ref().once("value", function(snapshot) {
             // runs a hard set for loop that will create or check no more than 10 games
@@ -41,17 +40,16 @@ $(document).ready(function() {
                 if (!gameExists) {
                 database.ref("/Game_" + i + "/playerOne").update({
                     email: userEmail,
-                    shipslocations: "",
                     guess: 0,
                 })
 
-                database.ref("Game_" + i + "/chat").push({
-                    message: "Begin smack talk!",
-                })
+                // database.ref("Game_" + i + "/chat").push({
+                //     message: "Begin smack talk!",
+                // })
 
                 $(".playerName").html(userEmail);
                 gamePath = "/Game_" + i + "/playerOne";
-
+                
                 database.ref(gamePath).onDisconnect().remove();
                 $("#signOut").attr("data-whoami", gamePath);
                 var game = "Game_" + i;
@@ -59,7 +57,7 @@ $(document).ready(function() {
                 $("#signOut").attr("data-game", game);
                 $("#signOut").attr("data-player", player);
 
-                return
+                return 
                 }
                 // if the game DOES exists AND there are less than two player in it, user is placed in game at player two
                 else if (gameExists && gamePlayers < 3) {
@@ -67,13 +65,12 @@ $(document).ready(function() {
                     if (playerTwoExists) {
                         database.ref("/Game_" + i + "/playerOne").update({
                             email: userEmail,
-                            shipslocations: "",
                             guess: 0,
                         })
 
 
                         $(".playerName").text(userEmail);
-
+                        
                         gamePath = "/Game_" + i + "/playerOne";
                         database.ref(gamePath).onDisconnect().remove();
                         $("#signOut").attr("data-whoami", gamePath);
@@ -86,11 +83,10 @@ $(document).ready(function() {
                     else {
                         database.ref("/Game_" + i + "/playerTwo").update({
                             email: userEmail,
-                            shipslocations: "",
                             guess: 0,
                         })
-
-                        gamePath = "/Game_" + i + "/playerTwo";
+                        
+                        gamePath = "/Game_" + i + "/playerTwo";   
                         database.ref(gamePath).onDisconnect().remove();
                         $("#signOut").attr("data-whoami", gamePath);
                         var game = "Game_" + i;
@@ -102,10 +98,9 @@ $(document).ready(function() {
 
                     database.ref("/Game_" + i + "/playerTwo").update({
                         email: userEmail,
-                        shipslocations: "",
                         guess: 0,
                     })
-
+ 
                         gamePath = "/Game_" + i + "/playerTwo";
                         database.ref(gamePath).onDisconnect().remove();
                         $("#signOut").attr("data-whoami", gamePath);
@@ -120,5 +115,5 @@ $(document).ready(function() {
             })
     }
 
-
+    
 });
