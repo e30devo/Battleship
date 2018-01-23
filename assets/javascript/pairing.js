@@ -38,8 +38,14 @@ $(document).ready(function() {
                 var playerTwoExists = snapshot.child("/Game_" + i + "/playerTwo").exists();
                 // if that game number does NOT exists, it is created and the user is place as player one and for loop exits
                 if (!gameExists) {
-                database.ref("/Game_" + i).update({
-                    playerOne: userEmail,
+                database.ref("/Game_" + i + "/playerOne").update({
+                    email: userEmail,
+                    shipslocations: "",
+                    guess: 0,
+                })
+
+                database.ref("Game_" + i + "/chat").update({
+                    chat: "",
                 })
 
                 $(".playerName").html(userEmail);
@@ -55,11 +61,12 @@ $(document).ready(function() {
                 return 
                 }
                 // if the game DOES exists AND there are less than two player in it, user is placed in game at player two
-                // working on git issues
-                else if (gameExists && gamePlayers < 2) {
+                else if (gameExists && gamePlayers < 3) {
                     if (playerTwoExists) {
-                        database.ref("/Game_" + i).update({
-                        playerOne: userEmail,
+                        database.ref("/Game_" + i + "/plaeyrOne").update({
+                            email: userEmail,
+                            shipslocations: "",
+                            guess: 0,
                         })
 
 
@@ -75,8 +82,10 @@ $(document).ready(function() {
                         return
                     }
                     else {
-                        database.ref("/Game_" + i).update({
-                            playerTwo: userEmail,
+                        database.ref("/Game_" + i + "/playerTwo").update({
+                            email: userEmail,
+                            shipslocations: "",
+                            guess: 0,
                         })
                         
                         gamePath = "/Game_" + i + "/playerTwo";   
@@ -89,9 +98,12 @@ $(document).ready(function() {
                         return
                     }
 
-                    database.ref("/Game_" + i).update({
-                        playerTwo: userEmail,
-                     }) 
+                    database.ref("/Game_" + i + "/playerTwo").update({
+                        email: userEmail,
+                        shipslocations: "",
+                        guess: 0,
+                    })
+ 
                         gamePath = "/Game_" + i + "/playerTwo";
                         database.ref(gamePath).onDisconnect().remove();
                         $("#signOut").attr("data-whoami", gamePath);
