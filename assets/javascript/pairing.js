@@ -44,8 +44,8 @@ $(document).ready(function() {
                     guess: 0,
                 })
 
-                database.ref("Game_" + i + "/chat").update({
-                    chat: "",
+                database.ref("Game_" + i + "/chat").push({
+                    message: "Begin smack talk!",
                 })
 
                 $(".playerName").html(userEmail);
@@ -64,7 +64,7 @@ $(document).ready(function() {
                 else if (gameExists && gamePlayers < 3) {
                     // if playerTwo already exists new player is placed at playerOne
                     if (playerTwoExists) {
-                        database.ref("/Game_" + i + "/plaeyrOne").update({
+                        database.ref("/Game_" + i + "/playerOne").update({
                             email: userEmail,
                             shipslocations: "",
                             guess: 0,
