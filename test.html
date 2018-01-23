@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Test</title>
+
+	<script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDFwlT7yYHRIs1JAD9QYHoKuNjLpFV2y_4",
+            authDomain: "battleship-ea03b.firebaseapp.com",
+            databaseURL: "https://battleship-ea03b.firebaseio.com",
+            projectId: "battleship-ea03b",
+            storageBucket: "battleship-ea03b.appspot.com",
+            messagingSenderId: "226823316716"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <script src="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.js"></script>
+</head>
+<body>
+	<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+	<script>
+	var database = firebase.database();
+
+	database.ref('Game_1/playerTwo/ship/ship5').on('child_added', function(snapshot){
+		var blockIndex = snapshot.key;
+		// opShip.push(blockIndex);
+		console.log(blockIndex);
+	});
+	</script>
+</body>
+</html>
