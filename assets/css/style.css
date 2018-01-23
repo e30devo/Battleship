@@ -29,14 +29,14 @@
 	}
 
 	.screen.player{
-		position: absolute;
-		top: 0;	left: 0;
+		/* position: absolute;
+		top: 0;	left: 0; */
 		z-index: 20;
 	}
 	.screen.opponent {
 		border: solid 1px red;
-		position: absolute;
-		top: 0;	right: 0;
+		/* position: absolute;
+		top: 0;	right: 0; */
 		z-index: 20;
 		} /* NOTE: to hide */
 
