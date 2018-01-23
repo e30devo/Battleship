@@ -50,7 +50,7 @@ var output = {};
 		console.log(output);
 
 		//writing to DOM
-		var table = $(".ranking-table");
+/*		var table = $(".ranking-table");
 		var row = table.insertRow(0);
 		var placeCell = row.insertCell(0);
 		var userCell = row.insertCell(1);
@@ -62,10 +62,9 @@ var output = {};
 			placeCell.innerHTML = placeCell;
 			userCell.innerHTML = "User";
 			averageCell.innerHTML = output[j];
-		}
+		}*/
 	}
-	
-	sort();
+
 
 	setTimeout(sort, 5000); // required since firebase calls are asynchronous, need to give firebase a chance to send back the data
 
