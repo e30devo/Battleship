@@ -6,44 +6,56 @@
 	<link rel="stylesheet" href="./assets/css/reset.css">
    	<link rel="stylesheet" href="./assets/css/style.css">
 
-	<script src="https://www.gstatic.com/firebasejs/4.8.2/firebase.js"></script>
-	<script>
-	// Initialize Firebase
-	var config = {
-		apiKey: "AIzaSyAFWlMWRYKyY2eMmyNxiRMQ-5FdxiM5j7o",
-		authDomain: "inclasstestproject.firebaseapp.com",
-		databaseURL: "https://inclasstestproject.firebaseio.com",
-		projectId: "inclasstestproject",
-		storageBucket: "inclasstestproject.appspot.com",
-		messagingSenderId: "215808646638"
-	};
-	firebase.initializeApp(config);
-	</script>
+		<script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
+		<script>
+		  // Initialize Firebase
+		  var config = {
+		    apiKey: "AIzaSyAFWlMWRYKyY2eMmyNxiRMQ-5FdxiM5j7o",
+		    authDomain: "inclasstestproject.firebaseapp.com",
+		    databaseURL: "https://inclasstestproject.firebaseio.com",
+		    projectId: "inclasstestproject",
+		    storageBucket: "inclasstestproject.appspot.com",
+		    messagingSenderId: "215808646638"
+		  };
+		  firebase.initializeApp(config);
+		</script>
 
 <body>
 
-	<h1 id="confirm">Start!</h1>
+	<button id="start" class="btn btn-primary" type="button" name="button">Start!</button>
 
 	<div class="game">
 		<div class="board">
 			<div class="player"></div>
+			<div class="opponent"></div>
 		</div>
 
 		<div class="ships">
-			<div id="ship1" class="ship" rotate="false" size="240px"><img src="./assets/images/ship1.png"></div>
-			<div id="ship2" class="ship" rotate="false" size="188px"><img src="./assets/images/ship1.png"></div>
-			<div id="ship3" class="ship" rotate="false" size="137px"><img src="./assets/images/ship1.png"></div>
+			<div id="ship1" class="ship" rotate="false" size="63px"><img src="./assets/images/ship1.png"></div>
+			<div id="ship2" class="ship" rotate="false" size="98px"><img src="./assets/images/ship1.png"></div>
+			<div id="ship3" class="ship" rotate="false" size="98px"><img src="./assets/images/ship1.png"></div>
 			<div id="ship4" class="ship" rotate="false" size="137px"><img src="./assets/images/ship1.png"></div>
-			<div id="ship5" class="ship" rotate="false" size="84px"><img src="./assets/images/ship1.png"></div>
+			<div id="ship5" class="ship" rotate="false" size="170px"><img src="./assets/images/ship1.png"></div>
 		</div>
 
-		<div class="screen">
-			<div class="player"></div>
-		</div>
+		<div class="screen player"></div>
+		<div class="screen opponent"></div>
 	</div>
 	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 
-	<script src="./assets/javascript/game.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+	crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4"
+	crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy"
+	crossorigin="anonymous">
+
+	<!-- <script src="./assets/javascript/logic.js"></script> -->
+	<!-- <script src="./assets/javascript/auth.js"></script> -->
+	<!-- <script src="./assets/javascript/battleshipGridlayout.js"></script> -->
+	<!-- <script src="./assets/javascript/pairing.js"></script> -->
+	<!-- <script src="./assets/javascript/geolocation.js"></script> -->
+	<script src="./assets/javascript/game2.js"></script>
 </body>
 </html>
