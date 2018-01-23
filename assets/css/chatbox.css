@@ -11,5 +11,10 @@
 }
 
 .chatContainer {
-    margin:20px;
+    margin:0 auto;
+    width: 50%;
+    position: absolute;
+    top: 450px;
+    left: 25%;
+    
 }
