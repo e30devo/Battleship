@@ -12,9 +12,27 @@ var database = firebase.database();
 $('.screen img').detach();
 
 var opShip =[];
+var shipsToSink = sessionStorage.getItem('shipsToSink');
+
+if(shipsToSink == undefined){
+	shipsToSink =5;
+}
+
+/*-------------------------------------
+| get game path
+-------------------------------------*/
 
 var myGame = sessionStorage.getItem('myGame');
 var myRole = sessionStorage.getItem('myRole');
+
+if (myGame == undefined){
+	setTimeout(function(){
+		myGame = $('#signOut').attr('data-game');
+		myRole = $('#signOut').attr('data-player');
+		console.log(myGame, myRole);
+	},2000);
+}
+
 var myOpponent;
 
 if(myRole === 'playerOne'){
@@ -29,6 +47,10 @@ if(myRole === 'playerOne'){
 
 var myPath = myGame + '/' + myRole + '/';
 var opPath = myGame + '/' + myOpponent + '/';
+
+/*-------------------------------------
+| reset game
+-------------------------------------*/
 
 reset_game();
 function reset_game(){
@@ -192,6 +214,10 @@ database.ref( opPath + 'ship/ship5').on('child_added', function(snapshot){
 -------------------------------------*/
 
 $(document).on('click', '.opponent .block',function(){
+
+	$('.screen.opponent').show();
+	console.log('opponent\'s turn');
+
 	var blockIndex = $(this).attr('index');
 
 	var hitSrc = './assets/images/hit.png';
@@ -252,6 +278,9 @@ database.ref(opPath + 'guess' ).on('child_added', function(snapshot){
 	} else {
 		$('#screen'+blockIndex).append('<img src="' + hitSrc + '">');
 	}
+
+	$('.screen.opponent').hide();
+	console.log('Your turn');
 });
 
 /*-------------------------------------
@@ -260,6 +289,11 @@ database.ref(opPath + 'guess' ).on('child_added', function(snapshot){
 
 database.ref(opPath + 'ship' ).on('child_removed', function(oldChildSnapshot) {
 	console.log('You sink ' + oldChildSnapshot.key);
+	shipsToSink--
+	sessionStorage.setItem('shipsToSink', shipsToSink);
+	if(shipsToSink === 0){
+		console.log('You win!');
+	}
 });
 
 
