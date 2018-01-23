@@ -22,6 +22,7 @@ $(document).ready(function() {
             // No user is signed in console logs...well you see
             console.log("no user signed in");
         }
+		$('#username').html(userEmail);
     });
 
     // this function runs a loop that assigns the player to a game
