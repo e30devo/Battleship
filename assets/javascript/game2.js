@@ -1,9 +1,5 @@
 $(document).ready(function() {
 
-/*-------------------------------------
-| global var
--------------------------------------*/
-
 var shipId;
 
 var xAxis = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -14,6 +10,18 @@ var playerGrid = xAxis.length * yAxis.length;
 var database = firebase.database();
 
 $('.screen img').detach();
+
+var opShip =[];
+
+reset_game();
+function reset_game(){
+	$('.guess').detach();
+	$('.screen.player').hide();
+	$('.screen.opponent').show();
+
+	database.ref('player1').remove();
+	database.ref('player1-guess').remove();
+}
 
 /*-------------------------------------
 | print grid
@@ -74,10 +82,7 @@ $('.ship').on('click', function(){
 
 $('#start').on('click', function(){
 
-	database.ref('player1').remove();
-	database.ref('player1-guess').remove();
-
-	$('.block').removeClass('hasShip');
+	$('.screen.opponent').hide();
 
 	for(var i=1; i< 6; i++){
 		shipId = 'ship'+i;
@@ -199,7 +204,7 @@ database.ref('player1-guess').on('child_added', function(snapshot){
 -------------------------------------*/
 
 database.ref('player1').on('child_removed', function(oldChildSnapshot) {
-  console.log('You sink' + oldChildSnapshot.key);
+  console.log('You sink ' + oldChildSnapshot.key);
 });
 
 
