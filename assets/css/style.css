@@ -6,7 +6,9 @@
 	/*-------------------------------------
 	| gameboard
 	-------------------------------------*/
-
+	body {
+		font-family: 'Lato', sans-serif;
+	}
 	/* contains two boards and all ships -------------------------------*/
 	.game {
 		position: relative;

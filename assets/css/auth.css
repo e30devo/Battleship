@@ -1,0 +1,29 @@
+
+.hideLogout {
+	visibility: hidden;
+}
+
+.showLogout {
+	visibility: visible;
+}
+.modal-footer {
+	justify-content: space-between;
+}
+
+#email, #password, #emailA, #emailB, #passwordA, #passwordB {
+	height: 28px;
+	width: 100%;
+	padding: 5px;
+	margin: 5px;
+}
+
+.modal-title {
+	font-size: 22px;
+	margin-left: 8px;
+}
+
+.prompt {
+	margin: 5px;
+	top: 10px;
+	font-weight: bold;
+}

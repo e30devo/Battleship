@@ -33,50 +33,78 @@ $(document).ready(function() {
             // runs a hard set for loop that will create or check no more than 10 games
             for (var i = 1; i < 11; i++) {
                 // sets an existence check to the existence of a game branch numbered Game "i"
-                var gameExists = snapshot.child("/Game " + i).exists();
-                var gamePlayers = snapshot.child("/Game " + i).numChildren();
-                var playerTwoExists = snapshot.child("/Game " + i + "/playerTwo").exists();
+                var gameExists = snapshot.child("/Game_" + i).exists();
+                var gamePlayers = snapshot.child("/Game_" + i).numChildren();
+                var playerTwoExists = snapshot.child("/Game_" + i + "/playerTwo").exists();
                 // if that game number does NOT exists, it is created and the user is place as player one and for loop exits
                 if (!gameExists) {
-                database.ref("/Game " + i).update({
+                database.ref("/Game_" + i).update({
                     playerOne: userEmail,
                 })
-                gamePath = "/Game " + i + "/playerOne";
+
+                $(".playerName").html(userEmail);
+                gamePath = "/Game_" + i + "/playerOne";
+                
                 database.ref(gamePath).onDisconnect().remove();
+                $("#signOut").attr("data-whoami", gamePath);
+                var game = "Game_" + i;
+                var player = "playerOne";
+                $("#signOut").attr("data-game", game);
+                $("#signOut").attr("data-player", player);
+
                 return 
                 }
                 // if the game DOES exists AND there are less than two player in it, user is placed in game at player two
                 // working on git issues
                 else if (gameExists && gamePlayers < 2) {
                     if (playerTwoExists) {
-                        database.ref("/Game " + i).update({
+                        database.ref("/Game_" + i).update({
                         playerOne: userEmail,
                         })
+
+
+                        $(".playerName").text(userEmail);
                         
-                        gamePath = "/Game " + i + "/playerOne";
+                        gamePath = "/Game_" + i + "/playerOne";
                         database.ref(gamePath).onDisconnect().remove();
+                        $("#signOut").attr("data-whoami", gamePath);
+                        var game = "Game_" + i;
+                        var player = "playerOne";
+                        $("#signOut").attr("data-game", game);
+                        $("#signOut").attr("data-player", player);
                         return
                     }
                     else {
-                        database.ref("/Game " + i).update({
+                        database.ref("/Game_" + i).update({
                             playerTwo: userEmail,
                         })
                         
-                        gamePath = "/Game " + i + "/playerTwo";   
+                        gamePath = "/Game_" + i + "/playerTwo";   
                         database.ref(gamePath).onDisconnect().remove();
+                        $("#signOut").attr("data-whoami", gamePath);
+                        var game = "Game_" + i;
+                        var player = "playerTwo";
+                        $("#signOut").attr("data-game", game);
+                        $("#signOut").attr("data-player", player);
                         return
                     }
 
-                    database.ref("/Game " + i).update({
+                    database.ref("/Game_" + i).update({
                         playerTwo: userEmail,
                      }) 
-                        gamePath = "/Game " + i + "/playerTwo";
+                        gamePath = "/Game_" + i + "/playerTwo";
                         database.ref(gamePath).onDisconnect().remove();
-                        return
+                        $("#signOut").attr("data-whoami", gamePath);
+                        var game = "Game_" + i;
+                        var player = "playerTwo";
+                        $("#signOut").attr("data-game", game);
+                        $("#signOut").attr("data-player", player);
+                        return gamePath
                     }
 
                 }
             })
     }
+
     
 });
