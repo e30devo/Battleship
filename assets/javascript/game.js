@@ -1,4 +1,5 @@
 $(document).ready(function() {
+console.log(myRole, myGame);
 
 var shipId;
 
@@ -12,6 +13,10 @@ var database = firebase.database();
 $('.screen img').detach();
 
 var opShip =[];
+
+var myGame;
+var myRole;
+var myOpponent;
 
 reset_game();
 function reset_game(){
@@ -82,6 +87,17 @@ $('.ship').on('click', function(){
 
 $('#start').on('click', function(){
 
+	myGame = $('#signOut').attr('data-game');
+	myRole = $('#signOut').attr('data-player');
+
+	if(myRole === 'playerOne'){
+		myOpponent = 'playerTwo';
+	} else {
+		myOpponent = 'playerOne';
+	}
+
+	console.log(myRole, myGame);
+
 	$('.screen.opponent').hide();
 	$('.screen.player').show();
 
@@ -126,7 +142,7 @@ function overlap(shipId, blockId) {
 		blockDiv.addClass('occupied').addClass(shipId);
 
 		/* push block location to database -------------------------------*/
-		database.ref('player1/' + shipId + '/'+ blockId).set({
+		database.ref(myGame + '/' + myRole + '/ship/' + shipId + '/'+ blockId).set({
 			blockId: blockId
 		});
 
@@ -151,7 +167,7 @@ $(document).on('click', '.opponent .block',function(){
 	if(hit === -1){
 		$('#op'+blockIndex).find('img').attr('src', missSrc);
 
-		database.ref('player1-guess/'+ blockIndex).set({
+		database.ref(myGame + '/' + myRole + '/guess/' + blockIndex).set({
 			status: 'miss'
 		});
 	}
@@ -174,11 +190,11 @@ $(document).on('click', '.opponent .block',function(){
 			whichShip ='ship5';
 		}
 
-		database.ref('player1-guess/'+ blockIndex).set({
+		database.ref(myGame + '/' + myRole + '/guess/' + blockIndex).set({
 			status: whichShip
 		});
 
-		database.ref('player1/'+ whichShip + '/' + blockIndex).remove();
+		database.ref(myGame + '/' + myOpponent + '/ship/' + blockIndex).remove();
 	}
 });
 
@@ -186,7 +202,7 @@ $(document).on('click', '.opponent .block',function(){
 | opponent's hit
 -------------------------------------*/
 
-database.ref('player1-guess').on('child_added', function(snapshot){
+database.ref(myGame + '/' + myOpponent + '/guess' ).on('child_added', function(snapshot){
 	var blockIndex = snapshot.key;
 	var status = snapshot.val().status;
 
@@ -204,7 +220,7 @@ database.ref('player1-guess').on('child_added', function(snapshot){
 | sink and defeat
 -------------------------------------*/
 
-database.ref('player1').on('child_removed', function(oldChildSnapshot) {
+database.ref(myGame + '/' + myOpponent + '/ship' ).on('child_removed', function(oldChildSnapshot) {
   console.log('You sink ' + oldChildSnapshot.key);
 });
 
