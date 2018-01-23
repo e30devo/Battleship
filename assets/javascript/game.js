@@ -13,11 +13,9 @@ $('.screen img').detach();
 
 var opShip =[];
 
-var myGame = $('.hideLogout').attr('data-game');
-var myRole = $('.hideLogout').attr('data-player');
+var myGame = sessionStorage.getItem('myGame');
+var myRole = sessionStorage.getItem('myRole');
 var myOpponent;
-var myPath;
-var opPath;
 
 if(myRole === 'playerOne'){
 	myOpponent = 'playerTwo';
@@ -29,14 +27,17 @@ if(myRole === 'playerOne'){
 	opPath = myGame + '/playerOne';
 }
 
+var myPath = myGame + '/' + myRole + '/';
+var opPath = myGame + '/' + myOpponent + '/';
+
 reset_game();
 function reset_game(){
 	$('.guess').detach();
 	$('.screen.player').hide();
 	$('.screen.opponent').show();
 
-	database.ref(myGame +'/' + myRole + '/guess').remove();
-	database.ref(myGame +'/' + myRole + '/ship').remove();
+	database.ref(myPath + '/guess').remove();
+	database.ref(myPath + myRole + '/ship').remove();
 }
 
 /*-------------------------------------
@@ -101,13 +102,8 @@ $('#start').on('click', function(){
 	myGame = $('#signOut').attr('data-game');
 	myRole = $('#signOut').attr('data-player');
 
-	if(myRole === 'playerOne'){
-		myOpponent = 'playerTwo';
-	} else {
-		myOpponent = 'playerOne';
-	}
-
-	console.log(myRole, myGame, myOpponent);
+	sessionStorage.setItem('myGame', myGame);
+	sessionStorage.setItem('myRole', myRole);
 
 	$('.screen.opponent').hide();
 	$('.screen.player').show();
@@ -123,35 +119,6 @@ $('#start').on('click', function(){
 		}
 	}
 
-	database.ref( myGame +'/'+ myOpponent + '/ship/ship1').on('child_added', function(snapshot){
-		var blockIndex = snapshot.key;
-		opShip.push(blockIndex);
-		console.log(blockIndex)
-	});
-
-	database.ref( myGame +'/'+ myOpponent + '/ship/ship2').on('child_added', function(snapshot){
-		var blockIndex = snapshot.key;
-		opShip.push(blockIndex);
-		console.log(blockIndex)
-	});
-
-	database.ref( myGame +'/'+ myOpponent + '/ship/ship3').on('child_added', function(snapshot){
-		var blockIndex = snapshot.key;
-		opShip.push(blockIndex);
-		console.log(blockIndex)
-	});
-
-	database.ref( myGame +'/'+ myOpponent + '/ship/ship4').on('child_added', function(snapshot){
-		var blockIndex = snapshot.key;
-		opShip.push(blockIndex);
-		console.log(blockIndex)
-	});
-
-	database.ref( myGame +'/'+ myOpponent + '/ship/ship5').on('child_added', function(snapshot){
-		var blockIndex = snapshot.key;
-		opShip.push(blockIndex);
-		console.log(blockIndex)
-	});
 });
 
 /*-------------------------------------
@@ -181,45 +148,48 @@ function overlap(shipId, blockId) {
 		// $('#'+blockId).removeClass('occupied');
 	} else {
 		blockDiv.addClass('occupied').addClass(shipId);
+		console.log(myPath);
 
 		/* push block location to database -------------------------------*/
-		database.ref(myGame + '/' + myRole + '/ship/' + shipId + '/'+ blockId).set({
+		database.ref(myPath + 'ship/' + shipId + '/'+ blockId).set({
 			blockId: blockId
 		});
 	}
 }
 
-// database.ref(myGame + '/' + myOpponent +'/ship/ship1').on('child_added', function(snapshot){
-// 	var blockIndex = snapshot.key;
-// 	opShip.push(blockIndex);
-// 	console.log(blockIndex);
-// });
-//
-// database.ref(myGame + '/' + myOpponent +'/ship/ship2').on('child_added', function(snapshot){
-// 	var blockIndex = snapshot.key;
-// 	opShip.push(blockIndex);
-// 	console.log(blockIndex);
-// });
-//
-// database.ref(myGame + '/' + myOpponent +'/ship/ship3').on('child_added', function(snapshot){
-// 	var blockIndex = snapshot.key;
-// 	opShip.push(blockIndex);
-// 	console.log(blockIndex);
-// });
-//
-// database.ref(myGame + '/' + myOpponent +'/ship/ship4').on('child_added', function(snapshot){
-// 	var blockIndex = snapshot.key;
-// 	opShip.push(blockIndex);
-// 	console.log(blockIndex);
-// });
+/*-------------------------------------
+| download opponent data
+-------------------------------------*/
 
+database.ref( opPath + 'ship/ship1').on('child_added', function(snapshot){
+	var blockIndex = snapshot.key;
+	opShip.push(blockIndex);
+});
 
+database.ref( opPath + 'ship/ship2').on('child_added', function(snapshot){
+	var blockIndex = snapshot.key;
+	opShip.push(blockIndex);
+});
+
+database.ref( opPath + 'ship/ship3').on('child_added', function(snapshot){
+	var blockIndex = snapshot.key;
+	opShip.push(blockIndex);
+});
+
+database.ref( opPath + 'ship/ship4').on('child_added', function(snapshot){
+	var blockIndex = snapshot.key;
+	opShip.push(blockIndex);
+});
+
+database.ref( opPath + 'ship/ship5').on('child_added', function(snapshot){
+	var blockIndex = snapshot.key;
+	opShip.push(blockIndex);
+	console.log(blockIndex)
+});
 
 /*-------------------------------------
 | hit or miss
 -------------------------------------*/
-
-var enemies = ['ship1', 'ship2', 'ship3', 'ship4', 'ship5'];
 
 $(document).on('click', '.opponent .block',function(){
 	var blockIndex = $(this).attr('index');
@@ -229,22 +199,12 @@ $(document).on('click', '.opponent .block',function(){
 
 	var hit = opShip.indexOf(blockIndex);
 	console.log(hit);
-	console.log(opShip);
-
-	myGame = $('#signOut').attr('data-game');
-	myRole = $('#signOut').attr('data-player');
-
-	if(myRole === 'playerOne'){
-		myOpponent = 'playerTwo';
-	} else {
-		myOpponent = 'playerOne';
-	}
 
 /* miss -------------------------------*/
 	if(hit === -1){
 		$('#op'+blockIndex).find('img').attr('src', missSrc);
 
-		database.ref(myGame + '/' + myRole + '/guess/' + blockIndex).set({
+		database.ref(myPath + 'guess/' + blockIndex).set({
 			status: 'miss'
 		});
 	}
@@ -267,16 +227,12 @@ $(document).on('click', '.opponent .block',function(){
 			whichShip ='ship5';
 		}
 
-		database.ref(myGame + '/' + myRole + '/guess/' + blockIndex).set({
+		database.ref(myPath + 'guess/' + blockIndex).set({
 			status: whichShip
 		});
 
-		database.ref(myGame + '/' + myOpponent + '/ship/' + whichShip + '/' + blockIndex).remove();
+		database.ref(opPath + 'ship/' + whichShip + '/' + blockIndex).remove();
 	}
-
-	database.ref(myGame + '/' + myOpponent + '/ship' ).on('child_removed', function(oldChildSnapshot) {
-	  console.log('You sink ' + oldChildSnapshot.key);
-	});
 
 });
 
@@ -284,7 +240,7 @@ $(document).on('click', '.opponent .block',function(){
 | opponent's hit
 -------------------------------------*/
 
-database.ref(myGame + '/' + myOpponent + '/guess' ).on('child_added', function(snapshot){
+database.ref(opPath + 'guess' ).on('child_added', function(snapshot){
 	var blockIndex = snapshot.key;
 	var status = snapshot.val().status;
 
@@ -302,7 +258,9 @@ database.ref(myGame + '/' + myOpponent + '/guess' ).on('child_added', function(s
 | sink and defeat
 -------------------------------------*/
 
-
+database.ref(opPath + 'ship' ).on('child_removed', function(oldChildSnapshot) {
+	console.log('You sink ' + oldChildSnapshot.key);
+});
 
 
 }); //document.ready close
