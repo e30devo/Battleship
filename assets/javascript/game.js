@@ -1,9 +1,5 @@
 $(document).ready(function() {
 
-/*-------------------------------------
-| global var
--------------------------------------*/
-
 var shipId;
 
 var xAxis = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -13,58 +9,89 @@ var playerGrid = xAxis.length * yAxis.length;
 
 var database = firebase.database();
 
+$('.screen img').detach();
+
+var opShip =[];
+
+reset_game();
+function reset_game(){
+	$('.guess').detach();
+	$('.screen.player').hide();
+	$('.screen.opponent').show();
+
+	database.ref('player1').remove();
+	database.ref('player1-guess').remove();
+}
+
 /*-------------------------------------
 | print grid
 -------------------------------------*/
 
-for (var i = 0; i < playerGrid; i++) {
-	var div = $("<div>");
-	var img = $("<img>");
-	var imgSrc = "./assets/images/waterTile.jpg";
-	var optImg = "./assets/images/waterTile.jpg";
-	img.addClass("water");
-	img.attr("src", imgSrc);
-	div.attr("index", [i]);
-	div.addClass('block');
-	div.attr('id','block'+[i]);
+for (var i = 0; i < xAxis.length; i++) {
+	for (var j = 0; j < yAxis.length; j++) {
+		var playerBlock = $('<div class="block">');
+		var opponentBlock = $('<div class="block">');
 
-	div.append(img);
-	$(".player").append(div);
+		var playerGrid = $('<div class="block">');
+
+		var water = $('<img src="./assets/images/waterTile.jpg">');
+
+		playerBlock.attr('id', xAxis[i]+ yAxis[j]).attr('index', xAxis[i]+yAxis[j]);
+		playerGrid.attr('id', 'screen'+ xAxis[i]+ yAxis[j]).attr('index', xAxis[i]+yAxis[j]);
+		opponentBlock.attr('id', 'op'+xAxis[i]+ yAxis[j]).attr('index', xAxis[i]+yAxis[j]);
+
+		$('.board .player').append(playerBlock);
+		$('.board .opponent').append(opponentBlock);
+		$('.screen.player').append(playerGrid);
+	}
 }
 
+$('.board .block').append(water);
+
 /*-------------------------------------
-| snap to grid
+| snap and rotate
 -------------------------------------*/
 
-var snapGrid = $('<div class="snapGrid">');
-$('.block').append(snapGrid);
+var snap = $('<div class="snap">');
+$('.board .player .block').append(snap);
 
 $('.ship').draggable({
-	grid: [ 52, 52 ],
-	snap: '.snapGrid',
+	snap: '.snap',
 	snapMode: 'inner',
-	containment: '.player'
+	containment: '.board .player'
+});
+
+$('.ship').on('click', function(){
+	var rotate = $(this).attr('rotate');
+	var size = $(this).attr('size');
+
+	if (rotate === 'false') {
+		$(this).attr('rotate', 'true');
+		$(this).css('height',size).css('width','26px');
+		$(this).find('img').attr('src','./assets/images/ship1-v.png');
+	} else {
+		$(this).attr('rotate', 'false');
+		$(this).css('height','26px').css('width',size);
+		$(this).find('img').attr('src','./assets/images/ship1.png');
+	}
 });
 
 /*-------------------------------------
 | place/ confirm/ reset
 -------------------------------------*/
-// NOTE: need to relocate reset
 
-$('#confirm').on('click', function(){
+$('#start').on('click', function(){
 
-	database.ref('player1').remove();
-	database.ref('player1-guess').remove();
-
-	$('.block').removeClass('hasShip');
-	$('.guess').detach();
+	$('.screen.opponent').hide();
 
 	for(var i=1; i< 6; i++){
 		shipId = 'ship'+i;
 
-		for(var j = 0; j < playerGrid; j++){
-			var blockId = 'block' + [j];
-			overlap(blockId);
+		for (var j = 0; j < xAxis.length; j++) {
+			for (var k = 0; k < yAxis.length; k++) {
+				var blockId = xAxis[j] + yAxis[k];
+				overlap(shipId, blockId);
+			}
 		}
 	}
 });
@@ -73,18 +100,21 @@ $('#confirm').on('click', function(){
 | check overlap
 -------------------------------------*/
 
-function overlap(blockId) {
-	var x1 = $('#'+blockId).offset().left;
-	var y1 = $('#'+blockId).offset().top;
-	var h1 = $('#'+blockId).outerHeight(true);
-	var w1 = $('#'+blockId).outerWidth(true);
+function overlap(shipId, blockId) {
+	var blockDiv = $('#' +blockId);
+	var shipDiv = $('#' +shipId);
+
+	var x1 = blockDiv.offset().left;
+	var y1 = blockDiv.offset().top;
+	var h1 = blockDiv.outerHeight(true);
+	var w1 = blockDiv.outerWidth(true);
 	var b1 = y1 + h1;
 	var r1 = x1 + w1;
 
-	var x2 = $('#'+shipId).offset().left;
-	var y2 = $('#'+shipId).offset().top;
-	var h2 = $('#'+shipId).outerHeight(true);
-	var w2 = $('#'+shipId).outerWidth(true);
+	var x2 = shipDiv.offset().left;
+	var y2 = shipDiv.offset().top;
+	var h2 = shipDiv.outerHeight(true);
+	var w2 = shipDiv.outerWidth(true);
 
 	var b2 = y2 + h2;
 	var r2 = x2 + w2;
@@ -92,106 +122,89 @@ function overlap(blockId) {
 	if (b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2) {
 		// $('#'+blockId).removeClass('occupied');
 	} else {
-		$('#'+blockId).addClass('occupied');
+		blockDiv.addClass('occupied').addClass(shipId);
 
 		/* push block location to database -------------------------------*/
-		database.ref('player1').push(blockId);
+		database.ref('player1/' + shipId + '/'+ blockId).set({
+			blockId: blockId
+		});
+
+		opShip.push(blockId);
 	}
 }
 
 /*-------------------------------------
-| duplicate board
+| hit or miss
 -------------------------------------*/
-
-var newGrid = $('.board').html();
-$('.board').append(newGrid);
-$('.player:eq(1)').addClass('opponent');
-$('.opponent .water').css('opacity',.6);
-
-/* change opponent block id -------------------------------*/
-for(var i = 0; i < playerGrid; i++){
-	var newId = 'op-block'+i
-	$('.opponent .block:eq('+ i +')').attr('id', newId);
-	$('.opponent .snapGrid').detach();
-}
-
-/*-------------------------------------
-| inset screen
--------------------------------------*/
-
-$('.screen .player .water').detach();
-$('.screen .player .snapGrid').detach();
-
-var opScreen = $('.screen').html();
-$('.screen').append(opScreen);
-$('.screen .player:eq(1)').addClass('opponent');
-
-for (var i = 0; i < playerGrid; i++) {
-	$('.screen .player .block:eq(' + [i] + ')').attr('id','screen' + [i] + '');
-	$('.screen .opponent .block:eq(' + [i] + ')').attr('id','opScreen' + [i] + '');
-}
-
-/*-------------------------------------
-| download opponent ship location
--------------------------------------*/
-
-database.ref('player1').on('child_added', function(snapshot){
-	var opBlockId = 'op-' + snapshot.val();
-
-	$('#'+opBlockId).addClass('hasShip');
-});
-
-/*-------------------------------------
-| click to rotate
--------------------------------------*/
-
-$('.ship').on('click', function(){
-	var rotate = $(this).attr('rotate');
-	var size = $(this).attr('size');
-
-	if (rotate === 'false') {
-		$(this).attr('rotate', 'true');
-		$(this).css('height',size).css('width','32px');
-		$(this).find('img').attr('src','./assets/images/ship1-v.png');
-	} else {
-		$(this).attr('rotate', 'false');
-		$(this).css('height','32px').css('width',size);
-		$(this).find('img').attr('src','./assets/images/ship1.png');
-	}
-});
-
-/*-------------------------------------
-| hit and sink
--------------------------------------*/
-
-var hitSrc = './assets/images/hit.png';
-var missSrc = './assets/images/miss.png';
 
 $(document).on('click', '.opponent .block',function(){
+	var blockIndex = $(this).attr('index');
 
-	var guessIndex = $(this).attr('index');
-	var hasShip = $(this).hasClass('hasShip');
+	var hitSrc = './assets/images/hit.png';
+	var missSrc = './assets/images/miss.png';
 
-	if(hasShip){
-		$('#opScreen'+guessIndex).append('<img class="guess" src="'+ hitSrc +'">');
-	} else {
-		$('#opScreen'+guessIndex).append('<img class="guess" src="'+ missSrc +'">');
+	var hit = opShip.indexOf(blockIndex);
+	console.log(hit);
+
+/* miss -------------------------------*/
+	if(hit === -1){
+		$('#op'+blockIndex).find('img').attr('src', missSrc);
+
+		database.ref('player1-guess/'+ blockIndex).set({
+			status: 'miss'
+		});
 	}
 
-	database.ref('player1-guess').push(guessIndex);
-	console.log(guessIndex);
+/* hit -------------------------------*/
+	else {
+		$('#op'+blockIndex).find('img').attr('src', hitSrc);
+
+		var whichShip;
+
+		if(-1< hit && hit<2){ /* 0,1---------*/
+			whichShip = 'ship1';
+		} else if (1< hit && hit<5){ /* 2,3,4---------*/
+			whichShip = 'ship2';
+		} else if (4< hit && hit<8){ /* 5,6,7---------*/
+			whichShip = 'ship3';
+		} else if (7< hit && hit<12){ /* 8,9,10,11---------*/
+			whichShip = 'ship4';
+		} else { /* 12,13,14,15,16---------*/
+			whichShip ='ship5';
+		}
+
+		database.ref('player1-guess/'+ blockIndex).set({
+			status: whichShip
+		});
+
+		database.ref('player1/'+ whichShip + '/' + blockIndex).remove();
+	}
 });
 
-database.ref('player1-guess').on('child_added', function(snapshot){
-	var guessIndex = snapshot.val();
-	var hasShip = $('#block' + guessIndex).hasClass('occupied');
+/*-------------------------------------
+| opponent's hit
+-------------------------------------*/
 
-	if(hasShip){
-		$('#screen'+guessIndex).append('<img class="guess" src="'+ hitSrc +'">');
+database.ref('player1-guess').on('child_added', function(snapshot){
+	var blockIndex = snapshot.key;
+	var status = snapshot.val().status;
+
+	var hitSrc = './assets/images/hit.png';
+	var missSrc = './assets/images/miss.png';
+
+	if(status ==='miss'){
+		$('#screen'+blockIndex).append('<img src="' + missSrc + '">');
 	} else {
-		console.log('miss');
-		$('#screen'+guessIndex).append('<img class="guess" src="'+ missSrc +'">');
+		$('#screen'+blockIndex).append('<img src="' + hitSrc + '">');
 	}
+});
+
+/*-------------------------------------
+| sink and defeat
+-------------------------------------*/
+
+database.ref('player1').on('child_removed', function(oldChildSnapshot) {
+  console.log('You sink ' + oldChildSnapshot.key);
 });
 
 
