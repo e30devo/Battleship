@@ -83,6 +83,7 @@ $('.ship').on('click', function(){
 $('#start').on('click', function(){
 
 	$('.screen.opponent').hide();
+	$('.screen.player').show();
 
 	for(var i=1; i< 6; i++){
 		shipId = 'ship'+i;
