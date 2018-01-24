@@ -254,9 +254,10 @@ $(document).ready(function() {
 			}
 		}
 
-		$('.screen .player').show();
+		$('.screen.player').show();
 		console.log(myPath, opPath);
-		check_click()
+		ship_location();
+		op_hit();
 	});
 
 	/*-------------------------------------
@@ -299,7 +300,7 @@ $(document).ready(function() {
 	| download opponent data
 	-------------------------------------*/
 
-	function check_click(){
+	function ship_location(){
 		database.ref(opPath + 'ship/ship1').on('child_added', function(snapshot){
 			var blockIndex = snapshot.key;
 			opShip.push(blockIndex);
@@ -335,6 +336,8 @@ $(document).ready(function() {
 	-------------------------------------*/
 
 	$(document).on('click', '.opponent .block',function(){
+
+		op_hit();
 
 		// $('.screen.opponent').show();
 		console.log('opponent\'s turn');
@@ -387,34 +390,34 @@ $(document).ready(function() {
 	| opponent's hit
 	-------------------------------------*/
 
-	database.ref(opPath + 'guess' ).on('child_added', function(snapshot){
-		var blockIndex = snapshot.key;
-		var status = snapshot.val().status;
+	function op_hit(){
+		database.ref(opPath + 'guess' ).on('child_added', function(snapshot){
+			var blockIndex = snapshot.key;
+			var status = snapshot.val().status;
 
-		var hitSrc = './assets/images/hit.png';
-		var missSrc = './assets/images/miss.png';
+			var hitSrc = './assets/images/hit.png';
+			var missSrc = './assets/images/miss.png';
 
-		if(status ==='miss'){
-			$('#screen'+blockIndex).append('<img src="' + missSrc + '">');
-		} else {
-			$('#screen'+blockIndex).append('<img src="' + hitSrc + '">');
-		}
+			if(status ==='miss'){
+				$('#screen'+blockIndex).append('<img src="' + missSrc + '">');
+			} else {
+				$('#screen'+blockIndex).append('<img src="' + hitSrc + '">');
+			}
 
-		// $('.screen.opponent').hide();
-		console.log('Your turn');
-	});
+			// $('.screen.opponent').hide();
+			console.log('Your turn');
+		});
+		sink_ship();
+	}
 
 	/*-------------------------------------
 	| sink and defeat
 	-------------------------------------*/
 
-	database.ref(opPath + 'ship' ).on('child_removed', function(oldChildSnapshot) {
-		console.log('You sink ' + oldChildSnapshot.key);
-		shipsToSink--
-		sessionStorage.setItem('shipsToSink', shipsToSink);
-		if(shipsToSink === 0){
-			console.log('You win!');
-		}
-	});
+	function sink_ship(){
+		database.ref(opPath + 'ship' ).on('child_removed', function(oldChildSnapshot) {
+			console.log('You sink ' + oldChildSnapshot.key);
+		});
+	}
 
 });
