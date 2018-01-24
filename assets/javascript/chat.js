@@ -39,4 +39,6 @@ $(document).ready(function() {
 
       }); //chatReference.on closer
     }); //database.ref closer
+
 }); //document.ready closer
+

@@ -8,6 +8,7 @@ $(document).ready(function() {
     var userEmail;
     var userUID;
 
+
 	var shipId;
 
 	var xAxis = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -117,6 +118,7 @@ $(document).ready(function() {
 
                         gamePath = "/Game_" + i + "/playerTwo";
                         database.ref("/Game_" + i + "/chat").onDisconnect().remove();
+
                         database.ref(gamePath).onDisconnect().remove();
                         $("#signOut").attr("data-whoami", gamePath);
                         var game = "Game_" + i;
