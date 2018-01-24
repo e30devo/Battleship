@@ -29,12 +29,12 @@ var output = {};
 
 	database.ref("/users").on("value", function(snapshot) {
 		snapshot.forEach(function(child) {
-			console.log(child.child("average").val());
+			/*console.log(child.child("average").val());*/
 			var email = child.child("email").val();
 			var average = child.child("average").val();
 			stats[email] = average;
 		});
-		console.log(stats);
+		/*console.log(stats);*/
 
 	})
 
@@ -47,7 +47,7 @@ var output = {};
 			output[obj] = stats[obj];
 		}
 	
-		console.log(output);
+		/*console.log(output);*/
 
 		//writing to DOM
 /*		var table = $(".ranking-table");

@@ -1,6 +1,6 @@
 $(document).ready(function() {
     
-    console.log("working");
+    /*console.log("working");*/
     // Create a variable to reference the database.
     var database = firebase.database();
     var gamePath = "";
@@ -8,19 +8,19 @@ $(document).ready(function() {
     var userEmail;
     var userUID;
 
-    console.log("On page load, userSigned in is: " + userSignedIn);
+    /*console.log("On page load, userSigned in is: " + userSignedIn);*/
     firebase.auth().onAuthStateChanged(function(userSignedIn) {
         if (userSignedIn) {
             // pulls user email and unique ID fron the returned user object
             userEmail = userSignedIn.email;
             userUID = userSignedIn.G
-                console.log(userEmail);
-                console.log(userUID);
+                /*console.log(userEmail);
+                console.log(userUID);*/
             // calls the assignGame function
             assignGame();
             } else {
             // No user is signed in console logs...well you see
-            console.log("no user signed in");
+            console.log("No User Signed In");
         }
     });
 
