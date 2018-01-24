@@ -12,6 +12,12 @@
 		background-repeat: no-repeat;
 		background-size: 100%;
 	}
+
+	.header {
+		margin: 0 auto;
+		text-align: center;
+	}
+
 	/* contains two boards and all ships -------------------------------*/
 	.game {
 		position: relative;
@@ -38,8 +44,8 @@
 	}
 	.screen.opponent {
 		border: solid 1px red;
-		position: absolute;
-		top: 0;	right: 0;
+		/* position: absolute; */
+		/* top: 0;	right: 0; */
 		z-index: 20;
 		} /* NOTE: to hide */
 
