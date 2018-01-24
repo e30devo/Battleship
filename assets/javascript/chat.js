@@ -14,9 +14,9 @@ $(document).ready(function() {
           database.ref("/" + thisGame + "/chat").push({
             message: [thisPlayer] + ": " + message
           });
-          
+
           //clears chatbox for next message
-          $(".chatbox").val("");      
+          $(".chatbox").val("");
       } //if closer
     }); //.chatbox.keyup closer
 
@@ -39,4 +39,6 @@ $(document).ready(function() {
 
       }); //chatReference.on closer
     }); //database.ref closer
+
 }); //document.ready closer
+

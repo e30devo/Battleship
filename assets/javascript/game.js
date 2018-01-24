@@ -12,28 +12,16 @@ var database = firebase.database();
 $('.screen img').detach();
 
 var opShip =[];
-var shipsToSink = sessionStorage.getItem('shipsToSink');
-
-if(shipsToSink == undefined){
-	shipsToSink =5;
-}
 
 /*-------------------------------------
 | get game path
 -------------------------------------*/
 
-var myGame = sessionStorage.getItem('myGame');
-var myRole = sessionStorage.getItem('myRole');
-
-if (myGame == undefined){
-	setTimeout(function(){
-		myGame = $('#signOut').attr('data-game');
-		myRole = $('#signOut').attr('data-player');
-		console.log(myGame, myRole);
-	},2000);
-}
-
-var myOpponent;
+var myGame = $('#signOut').attr('data-game');
+var myRole = $('#signOut').attr('data-player');
+var myOpponent = '';
+var myPath = '';
+var opPath = '';
 
 if(myRole === 'playerOne'){
 	myOpponent = 'playerTwo';
@@ -45,8 +33,7 @@ if(myRole === 'playerOne'){
 	opPath = myGame + '/playerOne';
 }
 
-var myPath = myGame + '/' + myRole + '/';
-var opPath = myGame + '/' + myOpponent + '/';
+console.log(myPath, myRole);
 
 /*-------------------------------------
 | reset game
@@ -55,11 +42,11 @@ var opPath = myGame + '/' + myOpponent + '/';
 reset_game();
 function reset_game(){
 	$('.guess').detach();
-	$('.screen.player').hide();
-	$('.screen.opponent').show();
+	// $('.screen.player').hide();
+	// $('.screen.opponent').show();
 
 	database.ref(myPath + '/guess').remove();
-	database.ref(myPath + myRole + '/ship').remove();
+	database.ref(myPath + '/ship').remove();
 }
 
 /*-------------------------------------
@@ -120,15 +107,12 @@ $('.ship').on('click', function(){
 -------------------------------------*/
 
 $('#start').on('click', function(){
+    //
+	// sessionStorage.setItem('myGame', myGame);
+	// sessionStorage.setItem('myRole', myRole);
 
-	myGame = $('#signOut').attr('data-game');
-	myRole = $('#signOut').attr('data-player');
-
-	sessionStorage.setItem('myGame', myGame);
-	sessionStorage.setItem('myRole', myRole);
-
-	$('.screen.opponent').hide();
-	$('.screen.player').show();
+	// $('.screen.opponent').hide();
+	// $('.screen.player').show();
 
 	for(var i=1; i< 6; i++){
 		shipId = 'ship'+i;
@@ -215,7 +199,7 @@ database.ref( opPath + 'ship/ship5').on('child_added', function(snapshot){
 
 $(document).on('click', '.opponent .block',function(){
 
-	$('.screen.opponent').show();
+	// $('.screen.opponent').show();
 	console.log('opponent\'s turn');
 
 	var blockIndex = $(this).attr('index');
@@ -279,7 +263,7 @@ database.ref(opPath + 'guess' ).on('child_added', function(snapshot){
 		$('#screen'+blockIndex).append('<img src="' + hitSrc + '">');
 	}
 
-	$('.screen.opponent').hide();
+	// $('.screen.opponent').hide();
 	console.log('Your turn');
 });
 
