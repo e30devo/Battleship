@@ -36,7 +36,13 @@ $(document).ready(function() {
                 var gameExists = snapshot.child("/Game_" + i).exists();
                 var gamePlayers = snapshot.child("/Game_" + i).numChildren();
                 var playerTwoExists = snapshot.child("/Game_" + i + "/playerTwo").exists();
+                var playerOneExists = snapshot.child("/Game_" + i + "/playerOne").exists();
                 // if that game number does NOT exists, it is created and the user is place as player one and for loop exits
+                
+                /*if ( !playerOneExists && !playerTwoExists) {
+                    database.ref("/Game_" + i).remove();
+                }*/
+
                 if (!gameExists) {
                 database.ref("/Game_" + i + "/playerOne").update({
                     email: userEmail,
@@ -49,7 +55,7 @@ $(document).ready(function() {
 
                 $(".playerName").html(userEmail);
                 gamePath = "/Game_" + i + "/playerOne";
-                
+                database.ref("/Game_" + i + "/chat").onDisconnect().remove();
                 database.ref(gamePath).onDisconnect().remove();
                 $("#signOut").attr("data-whoami", gamePath);
                 var game = "Game_" + i;
@@ -72,6 +78,7 @@ $(document).ready(function() {
                         $(".playerName").text(userEmail);
                         
                         gamePath = "/Game_" + i + "/playerOne";
+                        database.ref("/Game_" + i + "/chat").onDisconnect().remove();
                         database.ref(gamePath).onDisconnect().remove();
                         $("#signOut").attr("data-whoami", gamePath);
                         var game = "Game_" + i;
@@ -86,7 +93,8 @@ $(document).ready(function() {
                             guess: 0,
                         })
                         
-                        gamePath = "/Game_" + i + "/playerTwo";   
+                        gamePath = "/Game_" + i + "/playerTwo";
+                        database.ref("/Game_" + i + "/chat").onDisconnect().remove();   
                         database.ref(gamePath).onDisconnect().remove();
                         $("#signOut").attr("data-whoami", gamePath);
                         var game = "Game_" + i;
@@ -102,6 +110,7 @@ $(document).ready(function() {
                     })
  
                         gamePath = "/Game_" + i + "/playerTwo";
+                        database.ref("/Game_" + i + "/chat").onDisconnect().remove();
                         database.ref(gamePath).onDisconnect().remove();
                         $("#signOut").attr("data-whoami", gamePath);
                         var game = "Game_" + i;
