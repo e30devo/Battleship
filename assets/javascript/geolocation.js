@@ -1,7 +1,8 @@
 $(document).ready(function() {
+  var database = firebase.database();
   console.log("geolocation!");
 
-  if (navigator.geolocation) {     
+  if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
       var lat = position.coords.latitude;
       var lng = position.coords.longitude;
@@ -17,13 +18,46 @@ $(document).ready(function() {
 
       $.ajax({
         url: queryPath + latLong + apiKey + locality,
-        method: "GET",
+        method: "GET"
       }).done(function(response) {
         // console.log(response); //Leave in for debugging
 
         var location = response.results[7].formatted_address;
         console.log(location);
-      });
+        var thisGame = $(".hideLogout").attr("data-game");
+        var thisPlayer = $(".hideLogout").attr("data-player");
+        var geoLocationRef = database.ref("/" + [thisGame] + "/" + [thisPlayer] + ["/geolocation"]);
+        
+        geoLocationRef.update({
+          location
+        });
+
+        $(".location").html(location)
+
+        var myOpponent = "";
+
+        if (thisPlayer === "playerOne") {
+          myOpponent = "playerTwo";
+          myPath = thisGame + "/playerOne";
+          opPath = thisGame + "/playerTwo";
+        } else {
+          myOpponent = "playerOne";
+          myPath = thisGame + "/playerTwo";
+          opPath = thisGame + "/playerOne";
+        }
+
+        database.ref(thisGame).on("child_added", function(snapshot){
+          console.log(snapshot.val());
+          var opponentGeolocation = snapshot.child(myOpponent + "/geolocation").exists();
+        if (opponentGeolocation) {
+          console.log("bananas")
+          // console.log({opponentGeolocation: opponentGeolocation, expected: true});
+          
+        }
+        }); //database.ref.on.child_added closer
+
+
+      }); //.done function closer 
     }); //.getCurrentPosition closer
   } //if closer
 }); //document.ready closer
