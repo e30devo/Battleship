@@ -1,7 +1,7 @@
 $(document).ready(function() {
-  console.log("geolocation!");
+  var database = firebase.database();
 
-  if (navigator.geolocation) {     
+  if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
       var lat = position.coords.latitude;
       var lng = position.coords.longitude;
@@ -17,13 +17,46 @@ $(document).ready(function() {
 
       $.ajax({
         url: queryPath + latLong + apiKey + locality,
-        method: "GET",
+        method: "GET"
       }).done(function(response) {
         // console.log(response); //Leave in for debugging
 
-        var location = response.results[7].formatted_address;
-        console.log(location);
-      });
+        var location = response.results[4].formatted_address;
+        var thisGame = $(".hideLogout").attr("data-game");
+        var thisPlayer = $(".hideLogout").attr("data-player");
+        var geoLocationRef = database.ref(
+          "/" + [thisGame] + "/" + [thisPlayer] + ["/geolocation"]
+        );
+
+        geoLocationRef.update({
+          location
+        });
+
+        $(".location").html(location);
+
+        var myOpponent = "";
+
+        if (thisPlayer === "playerOne") {
+          myOpponent = "playerTwo";
+          myPath = thisGame + "/playerOne";
+          opPath = thisGame + "/playerTwo/geolocation";
+        } else {
+          myOpponent = "playerOne";
+          myPath = thisGame + "/playerTwo";
+          opPath = thisGame + "/playerOne/geolocation";
+        }
+
+        //higher path listener
+        database.ref().on("value", function(snapshot) {
+          //direct path listener
+          database.ref(opPath).on("value", function(snapshot) {
+            if (snapshot.val()) {
+              var opponentLocation = snapshot.val()["location"];
+              $(".opponentLocation").text(opponentLocation);
+            }
+          }); //database.ref.on.child_added closer
+        });
+      }); //.done function closer
     }); //.getCurrentPosition closer
   } //if closer
 }); //document.ready closer
