@@ -1,13 +1,21 @@
 /* li {
     list-style: none;
 } */
-
-.chatHistory {    
+#chatbox {
+    position: relative;
+    top: -460px;
+}
+.chatHistory { 
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
     font-size: 80%;
     border-width: 2px;
     border-color: black;
     border-style: dashed;
     padding: 2px;
+    overflow: scroll;
+    height: 200px;
 }
 
 .chatContainer {

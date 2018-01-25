@@ -1,7 +1,7 @@
 
 	body { line-height: 0px;}
 
-	#start { padding: 5px 20px;}
+	
 
 	/*-------------------------------------
 	| gameboard
@@ -91,14 +91,62 @@
 	#ship4 { width: 136px; height: 28px; top: 113px;}
 	#ship5 { width: 172px; height: 28px; top: 149px;}
 
-
-/*-----------------
-| Login/ Logout
-------------------*/
-.hideLogout {
-	visibility: hidden;
+#info {
+	display: flex;
+    margin-top: 49px;
+    justify-content: center;
 }
-
-.showLogout {
-	visibility: visible;
+.user-info {
+	position: relative;
+    right: 344px;
+}
+.op-info {
+	position: relative;
+    left: 25px;
+}
+.main {
+	align-items: center;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    top: 30px;
+}
+#battleship {
+	margin-bottom: 25px;
+	font-size: 30px;
+}
+#notification {
+	margin-top: 30px;
+}
+.user {
+    display: flex;
+    align-items: center;
+    margin-top: 25px;
+}
+#user-email {
+	margin-right: 10px;
+}
+.currentUser {
+	margin-top: 5px;
+}
+.btn {
+	padding: 5px 20px;
+	margin: 0 160px;
+}
+.playerRanking {
+	color: white;
+	font-size: 18px;
+}
+table, .table {
+	background: black;
+}
+.table {
+	display: flex;
+    justify-content: center;
+	overflow: scroll;
+	height: 300px;
+	width: 500px;
+}
+th, tr,td {
+	padding: 10px;
 }

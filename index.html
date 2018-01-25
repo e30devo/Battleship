@@ -9,9 +9,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy"
         crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="./assets/css/reset.css">
-    <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
-
     <link rel="stylesheet" type="text/css" href="./assets/css/chatbox.css">
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
     <link rel="stylesheet" type="text/css" href="./assets/css/auth.css">
 
     <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
@@ -33,16 +32,18 @@
 <body>
 
 	<!-- title and logout ------------>
-
+    
 	<div id="title">
 		<div class="main">
-			<h1>Battleship</h1>
-			<h2 id="notification">Place your ship and start!</h2>
-		</div>
-		<div class="user">
-			<p>Email: <span id="user-email"></span></p>
-			<button class="hideLogout" id="signOut">Log Out</button>
-		</div>
+			<h1 id="battleship">Battleship</h1>
+            <p class="currentUser">Welcome: <span id="user-email"></span></p>
+			<h2 id="notification">Place your ships and press start!</h2>
+    		<div class="user">
+                <button id="start" class="btn btn-primary" type="button" name="button">Start!</button>
+    			<!-- <p class="currentUser">Welcome: <span id="user-email"></span></p> -->
+    			<button class="btn btn-danger hideLogout" id="signOut">Log Out</button>
+    		</div>
+        </div>
 	</div>
 
 	<!-- auth: hidden ------------>
@@ -102,7 +103,6 @@
 				<p class="location"></p>
 				<p class="rank">Rank: <span class="insert-rank"></span></p>
 			</div>
-			<button id="start" class="btn btn-primary" type="button" name="button">Start!</button>
 		</div>
 		<div class="op-info">
 			<p class="name"></p>
@@ -145,6 +145,10 @@
 			<div class="chatHistory input-group"></div>
 		</div>
 	</div>
+    <div class="table">
+        <table class="playerRanking"></table>
+    </div>
+    
 
 	<!-- jquery and jquery.ui CDN -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
