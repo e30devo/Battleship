@@ -1,7 +1,10 @@
 /* li {
     list-style: none;
 } */
-
+#chatbox {
+    position: relative;
+    top: -460px;
+}
 .chatHistory { 
     display: flex;
     flex-direction: column;
