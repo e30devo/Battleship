@@ -189,7 +189,7 @@ $(document).ready(function() {
 
 			var playerGrid = $('<div class="block">');
 
-			var water = $('<img src="./assets/images/waterTile.jpg">');
+			var water = $('<img src="./assets/images/waterTile.png">');
 
 			playerBlock.attr('id', xAxis[i]+ yAxis[j]).attr('index', xAxis[i]+yAxis[j]);
 			playerGrid.attr('id', 'screen'+ xAxis[i]+ yAxis[j]).attr('index', xAxis[i]+yAxis[j]);
@@ -201,7 +201,7 @@ $(document).ready(function() {
 		}
 	}
 
-	$('.board .block').append(water);
+	$('.block').append(water);
 
 	/*-------------------------------------
 	| snap and rotate
@@ -223,11 +223,11 @@ $(document).ready(function() {
 		if (rotate === 'false') {
 			$(this).attr('rotate', 'true');
 			$(this).css('height',size).css('width','26px');
-			$(this).find('img').attr('src','./assets/images/ship1-v.png');
+			// $(this).find('img').attr('src','./assets/images/ship1-v.png');
 		} else {
 			$(this).attr('rotate', 'false');
 			$(this).css('height','26px').css('width',size);
-			$(this).find('img').attr('src','./assets/images/ship1.png');
+			// $(this).find('img').attr('src','./assets/images/ship1.png');
 		}
 	});
 
@@ -399,9 +399,9 @@ $(document).ready(function() {
 			var missSrc = './assets/images/miss.png';
 
 			if(status ==='miss'){
-				$('#screen'+blockIndex).append('<img src="' + missSrc + '">');
+				$('#screen'+blockIndex).find('img').attr('src', missSrc);
 			} else {
-				$('#screen'+blockIndex).append('<img src="' + hitSrc + '">');
+				$('#screen'+blockIndex).find('img').attr('src', hitSrc);
 			}
 
 			// $('.screen.opponent').hide();

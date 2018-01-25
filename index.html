@@ -9,9 +9,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy"
         crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="./assets/css/reset.css">
-    <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
-
     <link rel="stylesheet" type="text/css" href="./assets/css/chatbox.css">
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
     <link rel="stylesheet" type="text/css" href="./assets/css/auth.css">
 
     <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
@@ -36,12 +35,20 @@
 
 	<div id="title">
 		<div class="main">
-			<h1>Battleship</h1>
-			<h2 id="notification">Place your ship and start!</h2>
+			<h1 id="battleship">BATTLESHIP</h1>
+			<h2 id="notification">[ Place your ships and press start! ]</h2>
 		</div>
 		<div class="user">
-			<p>Email: <span id="user-email"></span></p>
-			<button class="hideLogout" id="signOut">Log Out</button>
+			<div>
+				<a class="navigation">How to Play</a>
+			</div>
+			<div>
+				<a class="navigation">About | </a>
+				<a class="navigation hideLogout" id="signOut"> Log Out</a>
+			</div>
+
+			<!-- <p class="currentUser">Welcome: <span id="user-email"></span></p> -->
+			<!-- <button class="btn btn-danger hideLogout" id="signOut">Log Out</button> -->
 		</div>
 	</div>
 
@@ -93,42 +100,46 @@
     </div>
 	</div>
 
+	<!-- game ------------>
+
+	<div id="game" class="game">
+		<div class="board">
+			<div class="player"><img class="grid-bg" src="./assets/images/grid.png"></div>
+			<div class="opponent"><img class="grid-bg" src="./assets/images/grid.png"></div>
+		</div>
+
+		<div class="ships">
+			<div id="ship1" class="ship" rotate="false" size="63px"></div>
+			<div id="ship2" class="ship" rotate="false" size="98px"></div>
+			<div id="ship3" class="ship" rotate="false" size="98px"></div>
+			<div id="ship4" class="ship" rotate="false" size="137px"></div>
+			<div id="ship5" class="ship" rotate="false" size="170px"></div>
+		</div>
+
+		<div class="screen player"></div>
+		<div class="screen opponent"></div>
+	</div>
+
 	<!-- player info ------------>
 
 	<div id="info">
 		<div class="user-info">
 			<div>
-				<p class="name"></p>
-				<p class="location"></p>
-				<p class="rank">Rank: <span class="insert-rank"></span></p>
+				<p id="user-email" class="currentUser">username@gmail.com</p>
+				<p id="user-location" class="location">Los Angeles, CA</p>
 			</div>
-			<button id="start" class="btn btn-primary" type="button" name="button">Start!</button>
+			<div>
+				<button id="start" type="button" name="button">[ Start! ]</button>
+				<p class="rank">Rank: <span id="user-rank"></span></p>
+			</div>
 		</div>
 		<div class="op-info">
-			<p class="name"></p>
-			<p class="location"></p>
-			<p class="rank">Rank: <span class="insert-rank"></span></p>
+			<div>
+				<p id="op-email" class="currentUser">username@gmail.com</p>
+				<p id="op-location" class="location">Los Angeles, CA</p>
+			</div>
+			<p class="rank">Rank: <span id="op-rank"></span></p>
 		</div>
-	</div>
-
-	<!-- game ------------>
-
-	<div id="game" class="game">
-		<div class="board">
-			<div class="player"></div>
-			<div class="opponent"></div>
-		</div>
-
-		<div class="ships">
-			<div id="ship1" class="ship" rotate="false" size="63px"><img src="./assets/images/ship1.png"></div>
-			<div id="ship2" class="ship" rotate="false" size="98px"><img src="./assets/images/ship1.png"></div>
-			<div id="ship3" class="ship" rotate="false" size="98px"><img src="./assets/images/ship1.png"></div>
-			<div id="ship4" class="ship" rotate="false" size="137px"><img src="./assets/images/ship1.png"></div>
-			<div id="ship5" class="ship" rotate="false" size="170px"><img src="./assets/images/ship1.png"></div>
-		</div>
-
-		<div class="screen player"></div>
-		<div class="screen opponent"></div>
 	</div>
 
 	<!-- chat ------------>
@@ -146,6 +157,19 @@
 		</div>
 	</div>
 
+	<!-- ranking ------------>
+
+	<div id="ranking">
+		<div class="table">
+			<table class="playerRanking"></table>
+		</div>
+	</div>
+
+	<div id="footer">
+		<p>2018 Copyright</p>
+	</div>
+
+
 	<!-- jquery and jquery.ui CDN -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
@@ -156,9 +180,10 @@
     <!-- <script src="./assets/javascript/geolocation.js"></script> -->
 	<script src="./assets/javascript/pairing.js"></script>
     <script src="./assets/javascript/chat.js"></script>
-
     <script src="./assets/javascript/playerRanking.js"></script>
+
     <!--Bootstrap 4.0-->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4"
