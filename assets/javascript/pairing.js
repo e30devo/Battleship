@@ -87,7 +87,7 @@ $(document).ready(function() {
                 return
                 }
                 // if the game DOES exists AND there are less than two player in it, user is placed in game at player two
-                else if (gameExists && gamePlayers < 3) {
+                else if (gameExists && gamePlayers < 2) {
                     // if playerTwo already exists new player is placed at playerOne
                     if (playerTwoExists) {
                         database.ref("/Game_" + i + "/playerOne").update({
