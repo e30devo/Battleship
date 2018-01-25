@@ -7,7 +7,7 @@ $(document).ready(function() {
     var userSignedIn = "nobody";
     var userEmail;
     var userUID;
-
+	
 
 	var shipId;
 
@@ -28,12 +28,17 @@ $(document).ready(function() {
 	var myPath = '';
 	var opPath = '';
 
+	var playerOneUID;
+	var playerTwoUID;
+
+	var winner = "";
+
     /*console.log("On page load, userSigned in is: " + userSignedIn);*/
     firebase.auth().onAuthStateChanged(function(userSignedIn) {
         if (userSignedIn) {
             // pulls user email and unique ID fron the returned user object
             userEmail = userSignedIn.email;
-            userUID = userSignedIn.G
+            userUID = userSignedIn.uid
                 /*console.log(userEmail);
                 console.log(userUID);*/
             // calls the assignGame function
@@ -66,7 +71,8 @@ $(document).ready(function() {
                 if (!gameExists) {
                 database.ref("/Game_" + i + "/playerOne").update({
                     email: userEmail,
-                    guess: 0,
+					guess: 0,
+					userUID: userUID,
                 })
 
                 // database.ref("Game_" + i + "/chat").push({
@@ -92,7 +98,8 @@ $(document).ready(function() {
                     if (playerTwoExists) {
                         database.ref("/Game_" + i + "/playerOne").update({
                             email: userEmail,
-                            guess: 0,
+							guess: 0,
+							userUID: userUID,
                         })
 
 
@@ -113,7 +120,8 @@ $(document).ready(function() {
                     else {
                         database.ref("/Game_" + i + "/playerTwo").update({
                             email: userEmail,
-                            guess: 0,
+							guess: 0,
+							userUID: userUID,
                         })
 
                         gamePath = "/Game_" + i + "/playerTwo";
@@ -131,7 +139,8 @@ $(document).ready(function() {
 
                     database.ref("/Game_" + i + "/playerTwo").update({
                         email: userEmail,
-                        guess: 0,
+						guess: 0,
+						userUID: userUID,
                     })
 
                         gamePath = "/Game_" + i + "/playerTwo";
@@ -340,7 +349,7 @@ $(document).ready(function() {
 		op_hit();
 
 		// $('.screen.opponent').show();
-		console.log('opponent\'s turn');
+		// console.log('opponent\'s turn');
 
 		var blockIndex = $(this).attr('index');
 
@@ -383,7 +392,7 @@ $(document).ready(function() {
 
 			database.ref(opPath + 'ship/' + whichShip + '/' + blockIndex).remove();
 		}
-
+	
 	});
 
 	/*-------------------------------------
@@ -405,7 +414,7 @@ $(document).ready(function() {
 			}
 
 			// $('.screen.opponent').hide();
-			console.log('Your turn');
+			// console.log('Your turn');
 		});
 		sink_ship();
 	}
@@ -425,15 +434,68 @@ $(document).ready(function() {
     function checkWin() {
         database.ref().once("value", function(snapshot) {
             var playerTwoShipsExist = snapshot.child(myGame + "/playerTwo/ship/").exists();
-            var playerOneShipsExist = snapshot.child(myGame + "/playerOne/ship/").exists();
+			var playerOneShipsExist = snapshot.child(myGame + "/playerOne/ship/").exists();
+			playerOneUID = snapshot.child(myGame + "/playerOne/userUID").val();
+			playerTwoUID = snapshot.child(myGame + "/playerTwo/userUID").val();
+			var playerOneWins = snapshot.child("/users/" + playerOneUID + "/wins").val();
+			var playerTwoWins = snapshot.child("/users/" + playerTwoUID + "/wins").val();
+			var playerOneLosses = snapshot.child("/users/" + playerOneUID + "/losses").val();
+			var playerTwoLosses = snapshot.child("/users/" + playerTwoUID + "/losses").val();
+			
 
             if (playerOneShipsExist && !playerTwoShipsExist) {
-                console.log("player one wins!");
+				console.log("player one wins!");
+				playerOneWins = playerOneWins + 1
+				playerTwoLosses = playerTwoLosses + 1
+				winner = "Player One";
+				database.ref(myGame).update({
+					win: winner,	
+				});
+				database.ref("/users/" + playerOneUID).update({
+					wins: playerOneWins,
+					losses: playerOneLosses,
+				});
+				database.ref("/users/" + playerTwoUID).update({
+					wins: playerTwoWins,
+					losses: playerTwoLosses,
+				});
+				database.ref(myGame + "/win").onDisconnect().remove();
+				
             }
-            else if (!playerOneShipsExist && playerTwoShipsExist) {
-                console.log("player two wins");
+            if (!playerOneShipsExist && playerTwoShipsExist) {
+				console.log("player two wins");
+				playerTwoWins = playerTwoWins + 1
+				playerOneLosses = playerOneLosses + 1
+				winner = "Player Two";
+				database.ref(myGame).update({
+					win: winner,
+				});
+				database.ref("/users/" + playerOneUID).update({
+					wins: playerOneWins,
+					losses: playerOneLosses,
+				});
+				database.ref("/users/" + playerTwoUID).update({
+					wins: playerTwoWins,
+					losses: playerTwoLosses,
+				});
+				database.ref(myGame + "/win").onDisconnect().remove();
+				
             }
         })
-    }
+	}
+
+	
+	database.ref().on("value", function(snapshot) {
+		winExists = snapshot.child(myGame + "/win/").exists();
+		gameWinner = snapshot.child(myGame +"/win/").val();
+		if (winExists) {
+			$("#notification").html("[ The Winner is " + gameWinner + " ]");
+			$(document).off("click");			
+		}
+	})
+
+	
+	
+	
 
 });
