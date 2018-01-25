@@ -21,7 +21,7 @@ $(document).ready(function() {
       }).done(function(response) {
         // console.log(response); //Leave in for debugging
 
-        var location = response.results[7].formatted_address;        
+        var location = response.results[4].formatted_address;
         var thisGame = $(".hideLogout").attr("data-game");
         var thisPlayer = $(".hideLogout").attr("data-player");
         var geoLocationRef = database.ref(
@@ -45,14 +45,17 @@ $(document).ready(function() {
           myPath = thisGame + "/playerTwo";
           opPath = thisGame + "/playerOne/geolocation";
         }
-        
-        database.ref(opPath).on("value", function(snapshot) {
-          
-          if (snapshot.val()) {
-            var opponentLocation = snapshot.val()["location"];
-            $(".opponentLocation").text(opponentLocation);            
-          }
-        }); //database.ref.on.child_added closer
+
+        //higher path listener
+        database.ref().on("value", function(snapshot) {
+          //direct path listener
+          database.ref(opPath).on("value", function(snapshot) {
+            if (snapshot.val()) {
+              var opponentLocation = snapshot.val()["location"];
+              $(".opponentLocation").text(opponentLocation);
+            }
+          }); //database.ref.on.child_added closer
+        });
       }); //.done function closer
     }); //.getCurrentPosition closer
   } //if closer
