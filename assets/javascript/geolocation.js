@@ -1,6 +1,5 @@
 $(document).ready(function() {
   var database = firebase.database();
-  console.log("geolocation!");
 
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
@@ -22,42 +21,39 @@ $(document).ready(function() {
       }).done(function(response) {
         // console.log(response); //Leave in for debugging
 
-        var location = response.results[7].formatted_address;
-        console.log(location);
+        var location = response.results[7].formatted_address;        
         var thisGame = $(".hideLogout").attr("data-game");
         var thisPlayer = $(".hideLogout").attr("data-player");
-        var geoLocationRef = database.ref("/" + [thisGame] + "/" + [thisPlayer] + ["/geolocation"]);
-        
+        var geoLocationRef = database.ref(
+          "/" + [thisGame] + "/" + [thisPlayer] + ["/geolocation"]
+        );
+
         geoLocationRef.update({
           location
         });
 
-        $(".location").html(location)
+        $(".location").html(location);
 
         var myOpponent = "";
 
         if (thisPlayer === "playerOne") {
           myOpponent = "playerTwo";
           myPath = thisGame + "/playerOne";
-          opPath = thisGame + "/playerTwo";
+          opPath = thisGame + "/playerTwo/geolocation";
         } else {
           myOpponent = "playerOne";
           myPath = thisGame + "/playerTwo";
-          opPath = thisGame + "/playerOne";
+          opPath = thisGame + "/playerOne/geolocation";
         }
-
-        database.ref(thisGame).on("child_added", function(snapshot){
-          console.log(snapshot.val());
-          var opponentGeolocation = snapshot.child(myOpponent + "/geolocation").exists();
-        if (opponentGeolocation) {
-          console.log("bananas")
-          // console.log({opponentGeolocation: opponentGeolocation, expected: true});
+        
+        database.ref(opPath).on("value", function(snapshot) {
           
-        }
+          if (snapshot.val()) {
+            var opponentLocation = snapshot.val()["location"];
+            $(".opponentLocation").text(opponentLocation);            
+          }
         }); //database.ref.on.child_added closer
-
-
-      }); //.done function closer 
+      }); //.done function closer
     }); //.getCurrentPosition closer
   } //if closer
 }); //document.ready closer
