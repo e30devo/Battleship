@@ -1,12 +1,7 @@
 
 	body { line-height: 0px;}
 
-	#start { 
-		top: 50px;
-	    left: 200px;
-	    position: relative;
-	    padding: 5px 20px;
-	}
+	
 
 	/*-------------------------------------
 	| gameboard
@@ -113,25 +108,45 @@
 	align-items: center;
     display: flex;
     flex-direction: column;
+    position: relative;
+    top: 30px;
 }
 #battleship {
 	margin-bottom: 25px;
 	font-size: 30px;
 }
 #notification {
-	margin-top: 3px;
+	margin-top: 30px;
 }
 .user {
-	display: flex;
-    justify-content: flex-end;
-    margin-right: 150px;
+    display: flex;
+    align-items: center;
+    margin-top: 25px;
 }
 #user-email {
 	margin-right: 10px;
 }
-#signOut {
-	float: right;
-    top: -15px;
-    position: relative;
+.currentUser {
+	margin-top: 5px;
 }
-
+.btn {
+	padding: 5px 20px;
+	margin: 0 160px;
+}
+.playerRanking {
+	color: white;
+	font-size: 18px;
+}
+table, .table {
+	background: black;
+}
+.table {
+	display: flex;
+    justify-content: center;
+	overflow: scroll;
+	height: 300px;
+	width: 500px;
+}
+th, tr,td {
+	padding: 10px;
+}

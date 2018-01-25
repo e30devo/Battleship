@@ -24,7 +24,7 @@ var output = {};
 			})
 		}
 
-
+		sort();
 	})
 
 	database.ref("/users").on("value", function(snapshot) {
@@ -40,33 +40,31 @@ var output = {};
 
 
 	function sort() {
-		ranked = Object.keys(stats).sort(function(a,b){return stats[a]-stats[b]});
-	
+		$(".playerRanking").empty();
+		ranked = Object.keys(stats).sort(function(a,b){return stats[b]-stats[a]});
+		$(".playerRanking").append("<thead><tr><th>Rank</th><th>Username</th><th>Win/Loss Average</th></tr></thead><tbody class='playerRankingTable'></tbody>");
 		for (i = 0; i < ranked.length; i++) {
-			var obj = ranked[i];
-			output[obj] = stats[obj];
+			var obj = ranked[i]; //gets email
+
+	/*		if (stats[obj]){
+				output[obj] = stats[obj]; //assigns average to the user in object	
+			} else {
+				output[obj] = 0; //if average is null give it a zero
+			}*/
+
+			var place = i+1;
+			if (stats[obj] === null) {
+				stats[obj] = 0;
+			}
+			$(".playerRankingTable").append("<tr><td>"+place+"</td><td>"+ranked[i]+"</td><td>"+stats[obj]+"</tr>");
 		}
 	
-		/*console.log(output);*/
-
-		//writing to DOM
-/*		var table = $(".ranking-table");
-		var row = table.insertRow(0);
-		var placeCell = row.insertCell(0);
-		var userCell = row.insertCell(1);
-		var averageCell = row.insertCell(2);
-
-		for (j = 0; j < output.length; j++) {
-			var place = j+1;
-
-			placeCell.innerHTML = placeCell;
-			userCell.innerHTML = "User";
-			averageCell.innerHTML = output[j];
-		}*/
+		console.log(output);
+		
 	}
 
 
-	setTimeout(sort, 5000); // required since firebase calls are asynchronous, need to give firebase a chance to send back the data
+	setTimeout(sort, 1000 * 2); // required since firebase calls are asynchronous, need to give firebase a chance to send back the data
 
 
 });
