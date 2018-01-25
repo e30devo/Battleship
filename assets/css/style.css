@@ -7,6 +7,7 @@ body {
 	background: linear-gradient(to bottom left, #18282D, #111C21);
 	width: 770px;
 	margin: 0 auto;
+	cursor: url(../images/cursor.png), auto;
 }
 
 h1 {
@@ -49,6 +50,9 @@ p {
 	font-size: 300;
 	color: #BCE0E4;
 }
+
+#title .user a:hover { color: #FF3200;}
+
 
 /*-------------------------------------
 | gameboard
@@ -103,6 +107,12 @@ p {
 	margin: 0;
 }
 
+.board .opponent .block:hover {
+	-moz-box-shadow:    inset 0 0 10px 0 rgba(188,224,228,50);
+	-webkit-box-shadow: inset 0 0 10px 0 rgba(188,224,228,50);
+	box-shadow:         inset 0 0 10px 0 rgba(188,224,228,50);
+}
+
 .block img { width: 100%; height: 100%; position: absolute;}
 
 .snap {
@@ -122,6 +132,10 @@ p {
 	z-index: 10; /* on top of grid -------------------------------*/
 	border: solid 2px #538393;
 	border-radius: 15px;
+}
+
+.ship:hover {
+	box-shadow: 0 0 10px 0 rgba(188,224,228,50);
 }
 
 .rotate { transform: rotate(90deg);}
@@ -150,6 +164,11 @@ p {
 	font-weight: 500;
 	color: #BCE0E4;
 	line-height: 24px;
+}
+
+#start:hover {
+	color: #FF3200;
+	cursor: url(../images/cursor.png), auto;
 }
 
 .user-info, .op-info {
