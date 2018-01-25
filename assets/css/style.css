@@ -126,5 +126,12 @@
     justify-content: flex-end;
     margin-right: 150px;
 }
-
+#user-email {
+	margin-right: 10px;
+}
+#signOut {
+	float: right;
+    top: -15px;
+    position: relative;
+}
 
