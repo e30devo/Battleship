@@ -36,10 +36,14 @@ $(document).ready(function(){
 		$("#signOut").removeClass("showLogout");
 	};
 
-	function loginFlow() {
+	function loginFlow(user) {
 		$("#myModalSignIn").modal('hide');
 		$("#myModalSignUp").modal('hide');
 		$("#signOut").addClass("showLogout");
+		var handle = user.email;
+		handle = handle.substring(0, handle.indexOf("@"));
+		$("#user-email").text(handle);
+
 		clearFields();
 	}
 
@@ -59,7 +63,7 @@ $(document).ready(function(){
 
 	firebase.auth().onAuthStateChanged(function(user) {
 	  if (user) {
-	  	loginFlow();
+	  	loginFlow(user);
 	  } else {
 	  	modalCall();
 	    /*console.log("No User");*/
