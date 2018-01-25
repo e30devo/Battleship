@@ -129,7 +129,7 @@
 .currentUser {
 	margin-top: 5px;
 }
-.btn {
+.btn .btn-danger .hideLogout, .btn .btn-primary {
 	padding: 5px 20px;
 	margin: 0 160px;
 }
