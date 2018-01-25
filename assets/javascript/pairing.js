@@ -87,7 +87,7 @@ $(document).ready(function() {
                 return
                 }
                 // if the game DOES exists AND there are less than two player in it, user is placed in game at player two
-                else if (gameExists && gamePlayers < 3) {
+                else if (gameExists && gamePlayers < 2) {
                     // if playerTwo already exists new player is placed at playerOne
                     if (playerTwoExists) {
                         database.ref("/Game_" + i + "/playerOne").update({
@@ -258,6 +258,7 @@ $(document).ready(function() {
 		console.log(myPath, opPath);
 		ship_location();
 		op_hit();
+		// whosTurn();
 	});
 
 	/*-------------------------------------
@@ -340,7 +341,7 @@ $(document).ready(function() {
 		op_hit();
 
 		// $('.screen.opponent').show();
-		console.log('opponent\'s turn');
+		// console.log('opponent\'s turn');
 
 		var blockIndex = $(this).attr('index');
 
@@ -383,7 +384,7 @@ $(document).ready(function() {
 
 			database.ref(opPath + 'ship/' + whichShip + '/' + blockIndex).remove();
 		}
-
+		// whosTurn();
 	});
 
 	/*-------------------------------------
@@ -405,9 +406,10 @@ $(document).ready(function() {
 			}
 
 			// $('.screen.opponent').hide();
-			console.log('Your turn');
+			// console.log('Your turn');
 		});
 		sink_ship();
+		// whosTurn();
 	}
 
 	/*-------------------------------------
@@ -428,12 +430,59 @@ $(document).ready(function() {
             var playerOneShipsExist = snapshot.child(myGame + "/playerOne/ship/").exists();
 
             if (playerOneShipsExist && !playerTwoShipsExist) {
-                console.log("player one wins!");
+				console.log("player one wins!");
+				$(document).off("click");
             }
             else if (!playerOneShipsExist && playerTwoShipsExist) {
-                console.log("player two wins");
+				console.log("player two wins");
+				$(document).off("click");
+
             }
         })
-    }
+	}
+	
+	// function whosTurn(){
+	// 	$(document).on("click");
+	// 	database.ref().once("value", function(snapshot) {
+	// 		myGuessesNumber = snapshot.child(myPath + "/guess").numChildren();
+	// 		opponentGuessesNumber = snapshot.child(opPath + "/guess").numChildren();
+	// 		console.log ("myGuessesNumber: " + myGuessesNumber);
+	// 		console.log ("oppnentGuessesNumber: " + opponentGuessesNumber)
+
+	// 		if (myRole + "playerOne") {
+	// 			if (myGuessesNumber === opponentGuessesNumber) {
+	// 				// it's my turn
+	// 				console.log("my role is " + myRole);
+	// 				console.log("It's MY turn");
+	// 			}
+	// 			else {
+	// 				// it's my opponents turn
+	// 				$(document).off("click");
+	// 				console.log("my role is " + myRole);
+	// 				console.log("It's OPPONENT'S turn")
+	// 			}
+	
+	// 		}
+
+	// 		else if (myRole === "playerTwo") {
+	// 			if (myGuessesNumber === opponentGuessesNumber) {
+	// 				// it's my opponents turn
+	// 				$(document).off("click");
+	// 				console.log("my role is " + myRole);
+	// 				console.log("It's OPPONENT'S turn")
+	// 			}
+	// 			else {
+	// 				// it's my turn
+	// 				console.log("my role is " + myRole);
+	// 				console.log("It's MY turn");
+	// 			}
+				
+	// 		}
+
+	// 		database.ref().on("value", function() {
+	// 			$(document).on("click");
+	// 		})
+	// 	})
+	// }
 
 });
