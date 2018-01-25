@@ -33,15 +33,15 @@
 <body>
 
 	<!-- title and logout ------------>
-
+    <button id="start" class="btn btn-primary" type="button" name="button">Start!</button>
 	<div id="title">
 		<div class="main">
-			<h1>Battleship</h1>
+			<h1 id="battleship">Battleship</h1>
 			<h2 id="notification">Place your ship and start!</h2>
 		</div>
 		<div class="user">
-			<p>Email: <span id="user-email"></span></p>
-			<button class="hideLogout" id="signOut">Log Out</button>
+			<p class="currentUser">User: <span id="user-email"></span></p>
+			<button class="btn btn-danger hideLogout" id="signOut">Log Out</button>
 		</div>
 	</div>
 
@@ -102,7 +102,6 @@
 				<p class="location"></p>
 				<p class="rank">Rank: <span class="insert-rank"></span></p>
 			</div>
-			<button id="start" class="btn btn-primary" type="button" name="button">Start!</button>
 		</div>
 		<div class="op-info">
 			<p class="name"></p>

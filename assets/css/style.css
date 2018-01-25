@@ -1,7 +1,12 @@
 
 	body { line-height: 0px;}
 
-	#start { padding: 5px 20px;}
+	#start { 
+		top: 50px;
+	    left: 200px;
+	    position: relative;
+	    padding: 5px 20px;
+	}
 
 	/*-------------------------------------
 	| gameboard
@@ -91,14 +96,35 @@
 	#ship4 { width: 136px; height: 28px; top: 113px;}
 	#ship5 { width: 172px; height: 28px; top: 149px;}
 
-
-/*-----------------
-| Login/ Logout
-------------------*/
-.hideLogout {
-	visibility: hidden;
+#info {
+	display: flex;
+    margin-top: 49px;
+    justify-content: center;
+}
+.user-info {
+	position: relative;
+    right: 344px;
+}
+.op-info {
+	position: relative;
+    left: 25px;
+}
+.main {
+	align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+#battleship {
+	margin-bottom: 25px;
+	font-size: 30px;
+}
+#notification {
+	margin-top: 3px;
+}
+.user {
+	display: flex;
+    justify-content: flex-end;
+    margin-right: 150px;
 }
 
-.showLogout {
-	visibility: visible;
-}
+
