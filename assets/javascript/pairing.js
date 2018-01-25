@@ -416,8 +416,24 @@ $(document).ready(function() {
 
 	function sink_ship(){
 		database.ref(opPath + 'ship' ).on('child_removed', function(oldChildSnapshot) {
-			console.log('You sink ' + oldChildSnapshot.key);
+            console.log('You sink ' + oldChildSnapshot.key);
+            
+            checkWin();
 		});
-	}
+    }
+    
+    function checkWin() {
+        database.ref().once("value", function(snapshot) {
+            var playerTwoShipsExist = snapshot.child(myGame + "/playerTwo/ship/").exists();
+            var playerOneShipsExist = snapshot.child(myGame + "/playerOne/ship/").exists();
+
+            if (playerOneShipsExist && !playerTwoShipsExist) {
+                console.log("player one wins!");
+            }
+            else if (!playerOneShipsExist && playerTwoShipsExist) {
+                console.log("player two wins");
+            }
+        })
+    }
 
 });
