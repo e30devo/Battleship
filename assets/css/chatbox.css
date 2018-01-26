@@ -2,6 +2,7 @@
     list-style: none;
 } */
 
+
 #chatbox {
 	margin-top: 30px;
 	border: solid 1px #BCE0E4;
@@ -9,10 +10,8 @@
 	background-color: #223035;
 }
 
-.input-group-prepend {
-}
-
 .chatHistory {
+
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
@@ -32,6 +31,7 @@
 	color: #538393;
 	font-size: 18px;
 	font-weight: 300;
+
 }
 
 .input-group-text {
