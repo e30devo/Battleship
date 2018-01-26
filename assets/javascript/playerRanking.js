@@ -56,7 +56,7 @@ var output = {};
 				stats[obj] = 0;
 			}
 
-			$(".playerRankingTable").append("<tr><td>"+place+"</td><td>"+ranked[i]+"</td><td>"+stats[obj]+"</tr>");
+			$(".playerRankingTable").append("<tr><td>"+place+"</td><td>"+ranked[i]+"</td><td>"+stats[obj].toFixed(4)+"</tr>");
 		}
 	
 		console.log(output);
