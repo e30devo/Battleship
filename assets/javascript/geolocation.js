@@ -21,23 +21,6 @@ $(document).ready(function() {
       }).done(function(response) {
         // console.log(response); //Leave in for debugging
 
-        var location = response.results[4].formatted_address;
-        var thisGame = $(".hideLogout").attr("data-game");
-        var thisPlayer = $(".hideLogout").attr("data-player");
-        var geoLocationRef = database.ref(
-          "/" + [thisGame] + "/" + [thisPlayer] + ["/geolocation"]
-        );
-        database.ref().on("child_added", function(snapshot) {
-          
-          if (thisPlayer.exists()) {
-            geoLocationRef.update({
-              location
-            });
-          }
-        });
-
-        $(".location").html(location);
-
         var myOpponent = "";
 
         if (thisPlayer === "playerOne") {
@@ -49,6 +32,23 @@ $(document).ready(function() {
           myPath = thisGame + "/playerTwo";
           opPath = thisGame + "/playerOne/geolocation";
         }
+
+        var location = response.results[4].formatted_address;
+        var thisGame = $(".hideLogout").attr("data-game");
+        var thisPlayer = $(".hideLogout").attr("data-player");
+        var geoLocationRef = database.ref("/" + [thisGame] + "/" + [thisPlayer] + ["/geolocation"]);
+        database.ref().on("value", function(snapshot) {          
+          if (myPath) {
+            geoLocationRef.update({
+              location
+            });
+          }
+        });
+        $(".location").html(location);
+
+ 
+
+
 
         //higher path listener
         database.ref().on("child_added", function(snapshot) {
