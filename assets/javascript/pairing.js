@@ -340,7 +340,7 @@ $(document).ready(function() {
 		op_hit();
 
 		// $('.screen.opponent').show();
-		console.log('opponent\'s turn');
+		$('#notification').html('[ Waiting for opponent ]');
 
 		var blockIndex = $(this).attr('index');
 
@@ -405,7 +405,7 @@ $(document).ready(function() {
 			}
 
 			// $('.screen.opponent').hide();
-			console.log('Your turn');
+			$('#notification').html('[ Your turn ]');
 		});
 		sink_ship();
 	}
@@ -416,7 +416,7 @@ $(document).ready(function() {
 
 	function sink_ship(){
 		database.ref(opPath + 'ship' ).on('child_removed', function(oldChildSnapshot) {
-			console.log('You sink ' + oldChildSnapshot.key);
+			$('#notification').html('[ You sank their ' + oldChildSnapshot.key + ' ]');
 		});
 	}
 
