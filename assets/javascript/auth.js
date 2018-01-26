@@ -37,6 +37,7 @@ $(document).ready(function(){
 	};
 
 	function loginFlow(user) {
+		console.log("in log in flow");
 		$("#myModalSignIn").modal('hide');
 		$("#myModalSignUp").modal('hide');
 		$("#signOut").addClass("showLogout");
@@ -50,6 +51,7 @@ $(document).ready(function(){
 
 	// builds player profile in database
 	function registerUser(user) {
+		console.log("in register user");
 		var userEmail = user.email;
 		var UID = user.uid;
 		database.ref("/users/" + UID).update({
@@ -83,8 +85,8 @@ $(document).ready(function(){
 					if(doTheyMatch(passwordA, passwordB) === true) {
 						firebase.auth().createUserWithEmailAndPassword(emailA, passwordA)
 							.then(function(user) {
-								loginFlow(); 
 								registerUser(user);
+								loginFlow(); 
 							})
 							.catch(function(error) {
 						  		switch (error.code) {
