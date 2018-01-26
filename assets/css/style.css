@@ -10,6 +10,10 @@ body {
 	cursor: url(../images/cursor.png), auto;
 }
 
+::-webkit-scrollbar {
+	display: none;
+}
+
 h1 {
 	font-family: 'Saira Condensed', sans-serif;
 	font-size: 80px;
