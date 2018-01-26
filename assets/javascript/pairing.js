@@ -173,9 +173,6 @@ $(document).ready(function() {
 			myPath = myGame + '/playerTwo/';
 			opPath = myGame + '/playerOne/';
 		}
-
-		console.log(myGame, myRole);
-		console.log(game, player);
 	}
 
 	/*-------------------------------------
@@ -259,7 +256,6 @@ $(document).ready(function() {
 		$('.board .opponent').css('opacity', 1);
 
 		$('.screen.player').show();
-		console.log(myPath, opPath);
 		ship_location();
 		op_hit();
 	});
@@ -291,7 +287,6 @@ $(document).ready(function() {
 			// $('#'+blockId).removeClass('occupied');
 		} else {
 			blockDiv.addClass('occupied').addClass(shipId);
-			console.log(myPath);
 
 			/* push block location to database -------------------------------*/
 			database.ref(myPath + 'ship/' + shipId + '/'+ blockId).set({
@@ -328,9 +323,6 @@ $(document).ready(function() {
 		database.ref(opPath + 'ship/ship5').on('child_added', function(snapshot){
 			var blockIndex = snapshot.key;
 			opShip.push(blockIndex);
-			console.log(blockIndex)
-			console.log(opShip);
-			console.log(opPath);
 		});
 	}
 
@@ -353,7 +345,7 @@ $(document).ready(function() {
 		var missSrc = './assets/images/miss.png';
 
 		var hit = opShip.indexOf(blockIndex);
-		console.log(hit);
+
 
 	/* miss -------------------------------*/
 		if(hit === -1){
@@ -441,7 +433,6 @@ $(document).ready(function() {
 			
 
             if (playerOneShipsExist && !playerTwoShipsExist) {
-				console.log("player one wins!");
 				playerOneWins = playerOneWins + 1
 				playerTwoLosses = playerTwoLosses + 1
 				winner = "Player One";
@@ -460,7 +451,6 @@ $(document).ready(function() {
 				
             }
             if (!playerOneShipsExist && playerTwoShipsExist) {
-				console.log("player two wins");
 				playerTwoWins = playerTwoWins + 1
 				playerOneLosses = playerOneLosses + 1
 				winner = "Player Two";
