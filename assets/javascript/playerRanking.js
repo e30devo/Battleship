@@ -45,12 +45,6 @@ var output = {};
 		for (i = 0; i < ranked.length; i++) {
 			var obj = ranked[i]; //gets email
 
-	/*		if (stats[obj]){
-				output[obj] = stats[obj]; //assigns average to the user in object	
-			} else {
-				output[obj] = 0; //if average is null give it a zero
-			}*/
-
 			var place = i+1;
 			if (stats[obj] === null) {
 				stats[obj] = 0;
@@ -59,7 +53,6 @@ var output = {};
 			$(".playerRankingTable").append("<tr><td>"+place+"</td><td>"+ranked[i]+"</td><td>"+stats[obj].toFixed(4)+"</tr>");
 		}
 	
-		console.log(output);
 		
 	}
 
