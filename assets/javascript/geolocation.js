@@ -40,7 +40,6 @@ $(document).ready(function() {
           }
 
           var location = response.results[4].formatted_address;
-       
           var geoLocationRef = database.ref("/" + [thisGame] + "/" + [thisPlayer] + ["/geolocation"]);
 
           database.ref().once("value", function(snapshot) {
@@ -54,17 +53,14 @@ $(document).ready(function() {
 
           //higher path listener
           database.ref().on("value", function(snapshot) {
-            console.log(snapshot.val());
             //direct path listener
-            console.log(opPath);
             database.ref(opPath).on("value", function(snapshot) {
-              console.log(snapshot.val());
               if (snapshot.val()) {
                 var opponentLocation = snapshot.val()["location"];
                 $(".opponentLocation").text(opponentLocation);
               }
-            }); //database.ref.on.child_added closer
-          });
+            }); //database.ref.opPath closer
+          }); //database.on value closer
         }); //.done function closer
       }); //.getCurrentPosition closer
     } //if closer
