@@ -1,5 +1,6 @@
-$(document).ready(function() {
-  setTimeout(function() {
+// $(document).ready(function() {
+  function geolocation() {
+  // setTimeout(function() {
     var database = firebase.database();
 
     if (navigator.geolocation) {
@@ -64,9 +65,9 @@ $(document).ready(function() {
         }); //.done function closer
       }); //.getCurrentPosition closer
     } //if closer
-  }, 1500);
-}); //document.ready closer
-
+  // }, 1500);
+// }); //document.ready closer
+}
 // Add this "<script src="./assets/javascript/geolocation.js"></script>"
 //to wherever you want it to pull and in this file include..
 // $(blah blah).text(location); under console.log(location);

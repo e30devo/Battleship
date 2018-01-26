@@ -45,6 +45,7 @@ $(document).ready(function(){
 		$("#user-email").text(handle);
 
 		clearFields();
+		geolocation();
 	}
 
 	// builds player profile in database
