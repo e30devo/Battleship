@@ -28,8 +28,8 @@ $(document).ready(function() {
           "/" + [thisGame] + "/" + [thisPlayer] + ["/geolocation"]
         );
         database.ref().on("child_added", function(snapshot) {
-          var opponentExists = snapshot.child(myOpponent).exists();
-          if (opponentExists) {
+          
+          if (thisPlayer.exists()) {
             geoLocationRef.update({
               location
             });
