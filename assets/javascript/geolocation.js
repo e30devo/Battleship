@@ -1,71 +1,74 @@
 $(document).ready(function() {
-  var database = firebase.database();
+  setTimeout(function() {
+    var database = firebase.database();
 
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-      var lat = position.coords.latitude;
-      var lng = position.coords.longitude;
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var lat = position.coords.latitude;
+        var lng = position.coords.longitude;
 
-      // console.log(position); //Leave in for debugging
-      // console.log(position.coords.latitude, position.coords.longitude); //Leave in for debugging
+        // console.log(position); //Leave in for debugging
+        // console.log(position.coords.latitude, position.coords.longitude); //Leave in for debugging
 
-      var queryPath = "https://maps.googleapis.com/maps/api/geocode/json?";
-      var latLong =
-        "latlng=" + position.coords.latitude + "," + position.coords.longitude;
-      var apiKey = "&key=AIzaSyBksTpvY0xaT6-AlwrAA5fZkPC4B2CyJcU";
-      var locality = "&result_type|locality";
+        var queryPath = "https://maps.googleapis.com/maps/api/geocode/json?";
+        var latLong =
+          "latlng=" +
+          position.coords.latitude +
+          "," +
+          position.coords.longitude;
+        var apiKey = "&key=AIzaSyBksTpvY0xaT6-AlwrAA5fZkPC4B2CyJcU";
+        var locality = "&result_type|locality";
 
-      $.ajax({
-        url: queryPath + latLong + apiKey + locality,
-        method: "GET"
-      }).done(function(response) {
-        // console.log(response); //Leave in for debugging
+        $.ajax({
+          url: queryPath + latLong + apiKey + locality,
+          method: "GET"
+        }).done(function(response) {
+          // console.log(response); //Leave in for debugging
 
-        var myOpponent = "";
+          var thisGame = $(".hideLogout").attr("data-game");
+          var thisPlayer = $(".hideLogout").attr("data-player");
+          var myOpponent = "";
 
-        if (thisPlayer === "playerOne") {
-          myOpponent = "playerTwo";
-          myPath = thisGame + "/playerOne";
-          opPath = thisGame + "/playerTwo/geolocation";
-        } else {
-          myOpponent = "playerOne";
-          myPath = thisGame + "/playerTwo";
-          opPath = thisGame + "/playerOne/geolocation";
-        }
-
-        var location = response.results[4].formatted_address;
-        var thisGame = $(".hideLogout").attr("data-game");
-        var thisPlayer = $(".hideLogout").attr("data-player");
-        var geoLocationRef = database.ref("/" + [thisGame] + "/" + [thisPlayer] + ["/geolocation"]);
-        database.ref().on("value", function(snapshot) {          
-          if (myPath) {
-            geoLocationRef.update({
-              location
-            });
+          if (thisPlayer === "playerOne") {
+            myOpponent = "playerTwo";
+            myPath = thisGame + "/playerOne";
+            opPath = "/" + thisGame + "/playerTwo/geolocation";
+          } else {
+            myOpponent = "playerOne";
+            myPath = thisGame + "/playerTwo";
+            opPath = "/" + thisGame + "/playerOne/geolocation";
           }
-        });
-        $(".location").html(location);
 
- 
+          var location = response.results[4].formatted_address;
+       
+          var geoLocationRef = database.ref("/" + [thisGame] + "/" + [thisPlayer] + ["/geolocation"]);
 
+          database.ref().once("value", function(snapshot) {
+            if (myPath) {
+              geoLocationRef.set({
+                location
+              });
+            }
+          });
+          $(".location").html(location);
 
-
-        //higher path listener
-        database.ref().on("child_added", function(snapshot) {
-          var opponentExists = snapshot.child(myOpponent).exists();
-          if (opponentExists) {
+          //higher path listener
+          database.ref().on("value", function(snapshot) {
+            console.log(snapshot.val());
             //direct path listener
+            console.log(opPath);
             database.ref(opPath).on("value", function(snapshot) {
+              console.log(snapshot.val());
               if (snapshot.val()) {
                 var opponentLocation = snapshot.val()["location"];
                 $(".opponentLocation").text(opponentLocation);
               }
             }); //database.ref.on.child_added closer
-          }
-        });
-      }); //.done function closer
-    }); //.getCurrentPosition closer
-  } //if closer
+          });
+        }); //.done function closer
+      }); //.getCurrentPosition closer
+    } //if closer
+  }, 1500);
 }); //document.ready closer
 
 // Add this "<script src="./assets/javascript/geolocation.js"></script>"
