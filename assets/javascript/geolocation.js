@@ -47,14 +47,17 @@ $(document).ready(function() {
         }
 
         //higher path listener
-        database.ref().on("value", function(snapshot) {
-          //direct path listener
-          database.ref(opPath).on("value", function(snapshot) {
-            if (snapshot.val()) {
-              var opponentLocation = snapshot.val()["location"];
-              $(".opponentLocation").text(opponentLocation);
-            }
-          }); //database.ref.on.child_added closer
+        database.ref().on("child_added", function(snapshot) {
+          var opponentExists = snapshot.child(myOpponent).exists();
+          if (opponentExists) {
+            //direct path listener
+            database.ref(opPath).on("value", function(snapshot) {
+              if (snapshot.val()) {
+                var opponentLocation = snapshot.val()["location"];
+                $(".opponentLocation").text(opponentLocation);
+              }
+            }); //database.ref.on.child_added closer
+          }
         });
       }); //.done function closer
     }); //.getCurrentPosition closer
