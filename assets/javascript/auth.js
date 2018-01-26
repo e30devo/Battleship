@@ -51,9 +51,6 @@ $(document).ready(function(){
 	function registerUser(user) {
 		var userEmail = user.email;
 		var UID = user.uid;
-		/*console.log(user)
-		console.log("hey now! " + userEmail);
-		console.log("hey now!!" + UID);*/
 		database.ref("/users/" + UID).update({
 				email: userEmail,
 				wins: 0,
@@ -66,7 +63,7 @@ $(document).ready(function(){
 	  	loginFlow(user);
 	  } else {
 	  	modalCall();
-	    /*console.log("No User");*/
+	    console.log("No User");
 	  }
 	});
 
