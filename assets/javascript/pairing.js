@@ -154,6 +154,10 @@ $(document).ready(function() {
 	function reset_game(){
 		$('.guess').detach();
 		$('.screen.player').hide();
+		$('.screen.opponent').show();
+
+		$('.board .player').css('opacity', 1);
+		$('.board .opponent').css('opacity', .5);
 		// $('.screen.opponent').show();
 
 		database.ref(myPath + 'guess').remove();
@@ -253,6 +257,10 @@ $(document).ready(function() {
 				}
 			}
 		}
+
+		$('.screen.opponent').hide();
+		$('.board .player').css('opacity', .5);
+		$('.board .opponent').css('opacity', 1);
 
 		$('.screen.player').show();
 		console.log(myPath, opPath);
