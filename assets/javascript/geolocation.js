@@ -27,9 +27,13 @@ $(document).ready(function() {
         var geoLocationRef = database.ref(
           "/" + [thisGame] + "/" + [thisPlayer] + ["/geolocation"]
         );
-
-        geoLocationRef.update({
-          location
+        database.ref().on("child_added", function(snapshot) {
+          var opponentExists = snapshot.child(myOpponent).exists();
+          if (opponentExists) {
+            geoLocationRef.update({
+              location
+            });
+          }
         });
 
         $(".location").html(location);
