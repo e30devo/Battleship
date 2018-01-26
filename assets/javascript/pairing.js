@@ -475,7 +475,7 @@ $(document).ready(function() {
 	database.ref().on("value", function(snapshot) {
 		winExists = snapshot.child(myGame + "/win/").exists();
 		gameWinner = snapshot.child(myGame +"/win/").val();
-		oppopnentName = snapshot.child(opPath + "email").val().
+		oppopnentName = snapshot.child(opPath + "email").val();
 		if (winExists) {
 			$("#notification").html("[ The Winner is " + gameWinner + " ]");
 			// $("#op-email").html(opponentName);
